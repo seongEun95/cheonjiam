@@ -7,20 +7,23 @@ import SignupPage from './page/SignupPage';
 import InquiryPage from './page/InquiryPage';
 import CartPage from './page/CartPage';
 import DetailPage from './page/DetailPage';
+import CommonPage from './page/CommonPage';
 
 export default function Router() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route path="/" element={<MainPage />}></Route>
-				<Route path="/red_ginseng" element={<RedGinsengPage />}></Route>
-				<Route path="/red_ginseng/:id" element={<DetailPage />} />
-				<Route path="/auth" element={<AuthPage />}>
-					<Route path="signin" element={<SigninPage />} />
-					<Route path="signup" element={<SignupPage />} />
+				<Route element={<CommonPage />}>
+					<Route path="/" element={<MainPage />}></Route>
+					<Route path="/red_ginseng" element={<RedGinsengPage />}></Route>
+					<Route path="/red_ginseng/:id" element={<DetailPage />} />
+					<Route path="/auth" element={<AuthPage />}>
+						<Route path="signin" element={<SigninPage />} />
+						<Route path="signup" element={<SignupPage />} />
+					</Route>
+					<Route path="/inquiry" element={<InquiryPage />} />
+					<Route path="/cart" element={<CartPage />} />
 				</Route>
-				<Route path="/inquiry" element={<InquiryPage />} />
-				<Route path="/cart" element={<CartPage />} />
 			</Routes>
 		</BrowserRouter>
 	);

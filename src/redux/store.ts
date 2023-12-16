@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'development') {
 const store = configureStore({
 	reducer: {},
 	// @ts-ignore
-	middleware: middlewares,
+	// middleware: middlewares,
 });
 
 export default store;
