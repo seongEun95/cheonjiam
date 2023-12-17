@@ -1,0 +1,22 @@
+[
+	{
+		"to": "/auth/signin",
+		"imgSrc": "/img/icon-util-login.png",
+		"alt": "로그인"
+	},
+	{
+		"to": "/auth/signup",
+		"imgSrc": "/img/icon-util-join.png",
+		"alt": "회원가입"
+	},
+	{
+		"to": "/cart",
+		"imgSrc": "/img/icon-util-cart.png",
+		"alt": "장바구니"
+	},
+	{
+		"to": "/inquiry",
+		"imgSrc": "/img/icon-util-customer.png",
+		"alt": "문의하기"
+	}
+]
