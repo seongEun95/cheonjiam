@@ -40,7 +40,7 @@ export default function Header() {
 							</span>
 
 							{isShow === index && (
-								<ul>
+								<ul css={subMenuWrapCss}>
 									{menu.submenu.map((submenuItem, subIndex) => (
 										<li key={subIndex}>
 											<Link css={subMenuCss} to={submenuItem.url}>
@@ -68,24 +68,32 @@ const headerCss = css`
 `;
 
 const logoCss = css`
-	margin-bottom: 40px;
+	margin-bottom: 80px;
 	text-align: center;
 `;
 
 const menuListCss = css`
-	margin-bottom: 24px;
+	margin-bottom: 20px;
 `;
 
 const titleMenuCss = css`
 	display: inline-block;
 	font-size: 16px;
 	font-weight: 700;
-	margin-bottom: 10px;
+	color: #221e1f;
 	cursor: pointer;
+`;
+
+const subMenuWrapCss = css`
+	margin-top: 7px;
 `;
 
 const subMenuCss = css`
 	display: inline-block;
-	font-size: 16px;
-	margin-bottom: 10px;
+	font-size: 14px;
+	font-weight: 500;
+	color: #656565;
+	letter-spacing: 0.02px;
+	margin-top: 5px;
+	margin-bottom: 5px;
 `;
