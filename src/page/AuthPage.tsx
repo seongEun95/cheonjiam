@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 
 export default function AuthPage() {
 	return (
-		<div>
+		<div css={titleCss}>
 			회원페이지
 			<div>
 				<Outlet />
@@ -13,3 +13,7 @@ export default function AuthPage() {
 		</div>
 	);
 }
+
+const titleCss = css`
+	text-align: center;
+`;
