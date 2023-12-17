@@ -2,30 +2,18 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { Link } from 'react-router-dom';
+import userMenuData from '../data/userMenuData.json';
 
 export default function UserMenu() {
 	return (
 		<ul css={userMenuWrapCss}>
-			<li>
-				<Link to="/auth/signin">
-					<img src={process.env.PUBLIC_URL + '/img/icon-util-login.png'} alt="로그인" />
-				</Link>
-			</li>
-			<li>
-				<Link to="/auth/signup">
-					<img src={process.env.PUBLIC_URL + '/img/icon-util-join.png'} alt="회원가입" />
-				</Link>
-			</li>
-			<li>
-				<Link to="/cart">
-					<img src={process.env.PUBLIC_URL + '/img/icon-util-cart.png'} alt="장바구니" />
-				</Link>
-			</li>
-			<li>
-				<Link to="/inquiry">
-					<img src={process.env.PUBLIC_URL + '/img/icon-util-customer.png'} alt="문의하기" />
-				</Link>
-			</li>
+			{userMenuData.map((icon, index) => (
+				<li key={index}>
+					<Link to={icon.to}>
+						<img src={process.env.PUBLIC_URL + icon.imgSrc} alt={icon.alt} />
+					</Link>
+				</li>
+			))}
 		</ul>
 	);
 }
