@@ -3,15 +3,15 @@
 import { jsx, css } from '@emotion/react';
 
 import { Outlet } from 'react-router-dom';
-import Header from '../components/Header';
+import SideNavBar from '../components/SideNavBar';
 import Footer from '../components/Footer';
-import UserMenu from '../components/UserMenu';
+import Header from '../components/Header';
 
 export default function CommonPage() {
 	return (
 		<div css={commonWrapCss}>
+			<SideNavBar />
 			<Header />
-			<UserMenu />
 			<Outlet />
 			<Footer />
 		</div>
@@ -19,5 +19,5 @@ export default function CommonPage() {
 }
 
 const commonWrapCss = css`
-	padding: 0 0 0 222px;
+	padding: 0 0 0 180px;
 `;
