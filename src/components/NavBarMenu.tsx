@@ -1,43 +1,70 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import menuData from '../data/menuData.json';
 import { Link } from 'react-router-dom';
 
 export default function NavBarMenu() {
 	const [menuList, setMenuList] = useState(menuData);
+	const subMenuRefs = useRef<Record<number, HTMLUListElement | null>>({});
+	const [subMenuHeight, setSubMenuHeight] = useState(0);
 
 	const subMenuOpen = (id: number) => {
 		console.log('클릭한 메뉴 : ' + id);
-		setMenuList(prev => prev.map(menu => ({ ...menu, isOpen: menu.id === id ? !menu.isOpen : false })));
+
+		const subMenuHeight = subMenuRefs.current[id]?.clientHeight || 0;
+		setSubMenuHeight(subMenuHeight);
+
+		setMenuList(prev =>
+			prev.map(menu => ({
+				...menu,
+				isOpen: menu.id === id ? !menu.isOpen : false,
+			})),
+		);
 	};
 
 	return (
 		<nav>
 			<ul>
-				{menuList &&
-					menuList.map((menu, index) => (
-						<li key={menu.id} css={menuListCss}>
-							<span onClick={() => subMenuOpen(menu.id)} css={menuTitleCss}>
-								{menu.label}
-							</span>
+				{menuList.map(menu => (
+					<li key={menu.id} css={menuListCss(menu.isOpen, subMenuHeight)}>
+						<span onClick={() => subMenuOpen(menu.id)} css={menuTitleCss}>
+							{menu.label}
+						</span>
 
-							{menu.isOpen && (
-								<ul css={subMenuWrapCss}>
-									{menu.submenu.map((subMenu, subIndex) => (
-										<li key={subMenu.label}>
-											<Link css={subMenuCss} to={subMenu.url}>
-												{subMenu.label}
-											</Link>
-										</li>
-									))}
-								</ul>
-							)}
-						</li>
-					))}
+						<SubMenu menu={menu} subMenuRefs={subMenuRefs} />
+					</li>
+				))}
 			</ul>
 		</nav>
+	);
+}
+
+type SubMenuProps = {
+	menu: {
+		id: number;
+		isOpen: boolean;
+		label: string;
+		submenu: {
+			label: string;
+			url: string;
+		}[];
+	};
+	subMenuRefs: React.MutableRefObject<Record<number, HTMLUListElement | null>>;
+};
+
+function SubMenu({ menu, subMenuRefs }: SubMenuProps) {
+	return (
+		<ul css={subMenuWrapCss} ref={el => (subMenuRefs.current[menu.id] = el)}>
+			{menu.submenu.map((subMenu, subIndex) => (
+				<li key={subIndex}>
+					<Link css={subMenuCss} to={subMenu.url}>
+						{subMenu.label}
+					</Link>
+				</li>
+			))}
+		</ul>
 	);
 }
 
@@ -49,8 +76,11 @@ const menuTitleCss = css`
 	cursor: pointer;
 `;
 
-const menuListCss = css`
+const menuListCss = (isOpen: boolean, subMenuHeight: number) => css`
+	overflow: hidden;
+	height: ${isOpen ? subMenuHeight + 26 : 16}px;
 	margin-bottom: 20px;
+	transition: height 0.3s;
 `;
 
 const subMenuWrapCss = css`
