@@ -10,7 +10,7 @@ export default function UserMenu() {
 			{userMenuData.map((icon, index) => (
 				<li key={index}>
 					<Link to={icon.to}>
-						<img src={process.env.PUBLIC_URL + icon.imgSrc} alt={icon.alt} />
+						<img src={icon.imgSrc} alt={icon.alt} />
 					</Link>
 				</li>
 			))}
