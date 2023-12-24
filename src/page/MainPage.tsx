@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../redux/store';
 import { plusCount } from '../redux/slice/countSlice';
-import ProductCard from '../components/ProductCard';
+import ProductCard from '../components/ProductCardVertical';
 
 export default function MainPage() {
 	const dispatch = useDispatch();
@@ -23,9 +23,7 @@ export default function MainPage() {
 					+
 				</button>
 			</div>
-			<div>
-				<ProductCard />
-			</div>
+			<div>{/* <ProductCard /> */}</div>
 		</div>
 	);
 }

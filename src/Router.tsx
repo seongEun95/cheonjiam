@@ -8,6 +8,7 @@ import InquiryPage from './page/InquiryPage';
 import CartPage from './page/CartPage';
 import DetailPage from './page/DetailPage';
 import CommonPage from './page/CommonPage';
+import TestPage from './page/TestPage';
 
 export default function Router() {
 	return (
@@ -24,6 +25,8 @@ export default function Router() {
 					<Route path="/inquiry" element={<InquiryPage />} />
 					<Route path="/cart" element={<CartPage />} />
 				</Route>
+
+				<Route path="/test" element={<TestPage />}></Route>
 			</Routes>
 		</BrowserRouter>
 	);
