@@ -8,6 +8,7 @@ import DiscountLabel from './ui/DIscountLabel';
 import { useState } from 'react';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 interface ProductCardVerticalProps {
 	data: Product;
@@ -15,12 +16,24 @@ interface ProductCardVerticalProps {
 }
 
 export default function ProductCardVertical({ data, onClick }: ProductCardVerticalProps) {
-	const [isHover, setIsHover] = useState(true);
+	const [isHover, setIsHover] = useState(false);
 	const [isLike, setIsLike] = useState(false);
 
 	const handleClickLike = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
 		setIsLike(prev => !prev);
+	};
+
+	const navigate = useNavigate();
+
+	const handleClickLoginNavigation = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
+		navigate('/auth/signin');
+	};
+
+	const handleClickCartNavigation = (e: React.MouseEvent<HTMLDivElement>) => {
+		e.stopPropagation();
+		navigate('/cart');
 	};
 
 	return (
@@ -58,14 +71,14 @@ export default function ProductCardVertical({ data, onClick }: ProductCardVertic
 			</div>
 
 			<div css={iconWrapperCss(isHover)}>
-				<div>
+				<div onClick={handleClickLoginNavigation}>
 					<img src="/img/icon-payment.png" alt="paymentIcon" />
 				</div>
-				<div>
+				<div onClick={handleClickCartNavigation}>
 					<img src="/img/icon-cart.png" alt="cartIcon" />
 				</div>
 				<div css={heartIconCss} onClick={handleClickLike}>
-					{isLike ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
+					{isLike ? <FaHeart fill="#d53147" size={20} /> : <FaRegHeart size={20} />}
 				</div>
 			</div>
 		</div>
@@ -79,6 +92,7 @@ const productWrapCss = css`
 	flex-direction: column;
 	align-items: center;
 	background-color: white;
+	border: 1px solid #ccc;
 	overflow: hidden;
 	cursor: pointer;
 `;
@@ -115,6 +129,7 @@ const heartIconCss = css`
 const nameCss = css`
 	font-size: 18px;
 	font-weight: 600;
+	line-height: 1.4;
 `;
 
 const lineWrapperCss = css`
