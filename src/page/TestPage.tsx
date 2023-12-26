@@ -23,7 +23,7 @@ export default function TestPage() {
 				alt="test"
 				src="https://www.cheonjiyang.co.kr/api/attach/view/product/13734/image/1"
 			/> */}
-			<ProductCardVertical data={PRODUCT_DATA} onClick={handleClickCard} />
+			{/* <ProductCardVertical data={PRODUCT_DATA} onClick={handleClickCard} /> */}
 		</div>
 	);
 }
