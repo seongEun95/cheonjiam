@@ -16,7 +16,7 @@ export default function RedGinsengPage() {
 			</div>
 			<div css={ProductCardWrapCss}>
 				{data.map(data => {
-					return <ProductCardHorizontal ProductData={data} />;
+					return <ProductCardHorizontal key={data.productVersionGroupSeq} ProductData={data} />;
 				})}
 			</div>
 		</div>
@@ -27,6 +27,7 @@ const ProductCardWrapCss = css`
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 535px));
 	gap: 40px;
+	width: 1110px;
 `;
 
 const titleCss = css`

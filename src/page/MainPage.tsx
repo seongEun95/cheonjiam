@@ -37,7 +37,7 @@ export default function MainPage() {
 			</div>
 			<div css={ProductCardVerticalWrapCss}>
 				{data.map(data => {
-					return <ProductCardVertical data={data} onClick={handleClickCard} />;
+					return <ProductCardVertical data={data} key={data.productVersionGroupSeq} onClick={handleClickCard} />;
 				})}
 			</div>
 		</div>
@@ -52,4 +52,5 @@ const mainWrapCss = css`
 const ProductCardVerticalWrapCss = css`
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 275px));
+	width: 1100px;
 `;
