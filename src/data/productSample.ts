@@ -28,7 +28,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천천지양 명품 홍삼정 골드(10ml x 30포) x1박스 1개월분',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3454,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
@@ -41,7 +41,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3502,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
@@ -54,7 +54,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3303,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
@@ -67,7 +67,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3210,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
@@ -80,7 +80,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 7731,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
@@ -93,7 +93,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3534,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
@@ -106,7 +106,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3533,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
@@ -119,7 +119,7 @@ export const PRODUCT_DATA: ProductList = [
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3329,
 		normalPrice: 200000,
 		memberPrice: 79000,
 		brandName: '천지양',
