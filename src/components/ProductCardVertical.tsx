@@ -4,7 +4,7 @@ import { jsx, css } from '@emotion/react';
 import { Product } from '../types/Product.type';
 import ProductImg from './ui/ProductImg';
 import RateStar from './ui/RateStar';
-import DiscountLabel from './ui/DIscountLabel';
+import DiscountLabel from './ui/DiscountLabel';
 import { useState } from 'react';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
