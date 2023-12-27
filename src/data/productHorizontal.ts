@@ -26,7 +26,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		memberDcRate: 61,
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3454,
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 		memberDcRate: 61,
 		productSeq: 13734,
@@ -38,7 +38,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewAvgRating: 4,
 	},
 	{
-		productVersionGroupSeq: 3329,
+		productVersionGroupSeq: 3502,
 		name: '천천지양 명품 홍삼정 골드(10ml x 30포) x1박스 1개월분',
 		normalPrice: 150000,
 		memberPrice: 59900,
@@ -50,7 +50,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		memberDcRate: 61,
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3303,
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 		memberDcRate: 61,
 		productSeq: 13734,
@@ -62,7 +62,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewAvgRating: 4,
 	},
 	{
-		productVersionGroupSeq: 3329,
+		productVersionGroupSeq: 3210,
 		name: '천천지양 명품 홍삼정 골드(10ml x 30포) x1박스 1개월분',
 		normalPrice: 150000,
 		memberPrice: 59900,
@@ -74,7 +74,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		memberDcRate: 61,
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 7731,
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 		memberDcRate: 61,
 		productSeq: 13734,
@@ -86,7 +86,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewAvgRating: 4,
 	},
 	{
-		productVersionGroupSeq: 3329,
+		productVersionGroupSeq: 3534,
 		name: '천천지양 명품 홍삼정 골드(10ml x 30포) x1박스 1개월분',
 		normalPrice: 150000,
 		memberPrice: 59900,
@@ -98,7 +98,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		memberDcRate: 61,
 	},
 	{
-		productVersionGroupSeq: 3311,
+		productVersionGroupSeq: 3533,
 		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 		memberDcRate: 61,
 		productSeq: 13734,
