@@ -10,7 +10,8 @@ import DiscountRate from './horizontalCardUi/DiscountRate';
 import { useNavigate } from 'react-router-dom';
 import { ProductHorizontal } from '../types/ProductHorizontal.type';
 
-export default function RedGinsengPage({ ProductData }: { ProductData: ProductHorizontal }) {
+export default function ProductCardHorizontal({ ProductData }: { ProductData: ProductHorizontal }) {
+	const navigate = useNavigate();
 	const [isHover, setIsHover] = useState(false);
 
 	const handleMouseEnter = () => {
@@ -20,8 +21,6 @@ export default function RedGinsengPage({ ProductData }: { ProductData: ProductHo
 	const handleMouseLeave = () => {
 		setIsHover(false);
 	};
-
-	const navigate = useNavigate();
 
 	const handleClickNavigate = (productId: number) => {
 		navigate(`/red_ginseng/${productId}`);
@@ -89,6 +88,7 @@ const brandNameCss = css`
 const titleCss = (isHover: boolean) => css`
 	font-size: 16px;
 	font-weight: 600;
+	line-height: 1.4;
 	margin-bottom: 40px;
 	text-decoration: ${isHover ? 'underline' : 'none'};
 `;
