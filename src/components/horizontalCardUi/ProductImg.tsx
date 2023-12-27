@@ -40,13 +40,13 @@ export default function ProductImg({ src, alt, isHover }: ProductImgProps) {
 			<img css={imgCss(isHover)} src={src} alt={alt} />
 
 			<div onClick={handleClickStopNavigation} css={iconWrapCss(isHover)}>
-				<div onClick={handleClickRedirectToSignin}>
+				<div css={paymentIconCss} onClick={handleClickRedirectToSignin}>
 					<img src="/img/icon-payment.png" alt="결제하기" />
 				</div>
 				<div onClick={handleClickRedirectToCart}>
 					<img src="/img/icon-gift.png" alt="선물하기" />
 				</div>
-				<div onClick={heartToggle}>
+				<div css={heartIconCss} onClick={heartToggle}>
 					{isHeartFilled ? <TiHeartFullOutline fill="#d53147" size={24} /> : <TiHeartOutline size={24} />}
 				</div>
 			</div>
@@ -58,12 +58,11 @@ const imgWrapCss = css`
 	width: 240px;
 	height: 240px;
 	overflow: hidden;
+	flex-shrink: 0;
 `;
 
 const imgCss = (isHover: boolean) => css`
 	width: 100%;
-	height: 100%;
-	object-fit: cover;
 	transform: scale(${isHover ? 1.1 : 1});
 	transition: all 0.4s;
 `;
@@ -79,4 +78,12 @@ const iconWrapCss = (isHover: boolean) => css`
 	opacity: ${isHover ? 1 : 0};
 	background-color: rgba(255, 255, 255, 0.8);
 	transition: all 0.4s;
+`;
+
+const paymentIconCss = css`
+	margin-top: 4px;
+`;
+
+const heartIconCss = css`
+	margin-top: 2px;
 `;
