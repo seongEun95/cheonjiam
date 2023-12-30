@@ -12,7 +12,7 @@ export const PRODUCT_DATA: ProductList = [
 		reviewAvgRating: 4,
 		memberDcRate: 61,
 		soldOutYn: 'N',
-		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
+		name: '(처음)천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
 		productVersionGroupSeq: 3329,
@@ -103,7 +103,7 @@ export const PRODUCT_DATA: ProductList = [
 		reviewAvgRating: 4,
 		memberDcRate: 61,
 		soldOutYn: 'N',
-		name: '천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
+		name: '(마지막)천지양 내가먹는 홍삼스틱(10g x 100포) x1박스',
 	},
 	{
 		productVersionGroupSeq: 3533,
