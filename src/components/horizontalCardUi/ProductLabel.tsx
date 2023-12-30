@@ -7,9 +7,10 @@ type ProductLabelProps = {
 	label?: string;
 };
 
+const labelTxt = ['BEST', 'GIFT', 'NEW'];
+
 export default function ProductLabel({ label }: ProductLabelProps) {
 	const labels = label?.split(',');
-	const labelTxt = ['BEST', 'GIFT', 'NEW'];
 	const hasLabel = (targetLabel: string) => label?.includes(targetLabel);
 
 	return (
