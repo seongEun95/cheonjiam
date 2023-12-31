@@ -6,7 +6,7 @@ import '../style/carouselCustomDots.css';
 const CustomDot = ({ onClick, active }: any) => {
 	return (
 		<li>
-			<button css={dotsCss(active)} onClick={() => onClick()} />
+			<button css={dotsCss(active)} onClick={onClick} />
 		</li>
 	);
 };

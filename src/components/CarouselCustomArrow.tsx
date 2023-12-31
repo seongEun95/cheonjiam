@@ -4,12 +4,12 @@ import { jsx, css } from '@emotion/react';
 import { RiArrowLeftSLine, RiArrowRightSLine } from 'react-icons/ri';
 
 const CustomLeftArrow = ({ onClick }: any) => (
-	<i css={[arrowCommonCss, nextArrowCss]} onClick={() => onClick()}>
+	<i css={[arrowCommonCss, nextArrowCss]} onClick={onClick}>
 		<RiArrowRightSLine size={20} fill="#666" />
 	</i>
 );
 const CustomRightArrow = ({ onClick }: any) => (
-	<i css={[arrowCommonCss, prevArrowCss]} onClick={() => onClick()}>
+	<i css={[arrowCommonCss, prevArrowCss]} onClick={onClick}>
 		<RiArrowLeftSLine size={20} fill="#666" />
 	</i>
 );
