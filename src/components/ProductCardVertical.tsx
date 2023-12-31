@@ -13,10 +13,9 @@ import { useNavigate } from 'react-router-dom';
 interface ProductCardVerticalProps {
 	data: Product;
 	onClick?: (cardId: number) => void;
-	slideNum: number;
 }
 
-export default function ProductCardVertical({ data, onClick, slideNum }: ProductCardVerticalProps) {
+export default function ProductCardVertical({ data, onClick }: ProductCardVerticalProps) {
 	const [isHover, setIsHover] = useState(false);
 	const [isLike, setIsLike] = useState(false);
 
@@ -39,9 +38,9 @@ export default function ProductCardVertical({ data, onClick, slideNum }: Product
 
 	return (
 		<div
-			css={productWrapCss(slideNum)}
-			onMouseEnter={() => setIsHover(prev => true)}
-			onMouseLeave={() => setIsHover(prev => false)}
+			css={productWrapCss}
+			onMouseEnter={() => setIsHover(() => true)}
+			onMouseLeave={() => setIsHover(() => false)}
 			onClick={() => onClick && onClick(data.productVersionGroupSeq)}
 		>
 			<ProductImg
@@ -86,7 +85,7 @@ export default function ProductCardVertical({ data, onClick, slideNum }: Product
 	);
 }
 
-const productWrapCss = (slideNum: number) => css`
+const productWrapCss = css`
 	position: relative;
 	width: 275px;
 	flex-shrink: 0;
@@ -94,8 +93,6 @@ const productWrapCss = (slideNum: number) => css`
 	flex-direction: column;
 	align-items: center;
 	overflow: hidden;
-	transform: translateX(${325 * slideNum}px);
-	transition: all 0.3s;
 	background-color: white;
 	border: 1px solid #ccc;
 	cursor: pointer;
