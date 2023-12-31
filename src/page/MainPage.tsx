@@ -17,7 +17,7 @@ export default function MainPage() {
 	const dispatch = useDispatch();
 	const count = useSelector((state: RootState) => state.count);
 
-	const [data] = useState<ProductList>(PRODUCT_DATA.filter((_, index) => index < 8)); // 인덱스 0 ~ 7까지만 생성, 총 8개 제품만 보여주기
+	const [data] = useState<ProductList>(PRODUCT_DATA.filter((_, index) => index < 10)); // 인덱스 0 ~ 7까지만 생성, 총 8개 제품만 보여주기
 
 	const navigate = useNavigate();
 	const [slideNum, setSlideNum] = useState<number>(0);
@@ -43,17 +43,12 @@ export default function MainPage() {
 
 			<div css={productCardVerticalWrapCss}>
 				<h2 css={titleCss}>Best Seller</h2>
-				<div css={productCardVerticalInnerCss}>
-					{data.map(data => {
-						return (
-							<ProductCardVertical
-								slideNum={slideNum}
-								data={data}
-								key={data.productVersionGroupSeq}
-								onClick={handleClickCard}
-							/>
-						);
-					})}
+				<div css={productCardVerticalOuterCss}>
+					<div css={productCardVerticalInnerCss(slideNum)}>
+						{data.map(data => {
+							return <ProductCardVertical data={data} key={data.productVersionGroupSeq} onClick={handleClickCard} />;
+						})}
+					</div>
 				</div>
 				<div>
 					{slideNum !== 0 && (
@@ -61,7 +56,7 @@ export default function MainPage() {
 							<IoIosArrowBack size={20} />
 						</button>
 					)}
-					{slideNum !== -5 && (
+					{slideNum !== -data.length + 3 && (
 						<button css={[btnCommonCss, nextBtnCss]} onClick={handleClickSlideNext}>
 							<IoIosArrowForward size={20} />
 						</button>
@@ -97,12 +92,17 @@ const titleCss = css`
 	text-align: center;
 `;
 
-const productCardVerticalInnerCss = css`
+const productCardVerticalOuterCss = css`
+	width: 925px;
+	overflow: hidden;
+	margin: 0 auto;
+`;
+
+const productCardVerticalInnerCss = (slideNum: number) => css`
 	display: flex;
 	gap: 50px;
-	overflow: hidden;
-	width: 925px;
-	margin: 0 auto;
+	transform: translateX(${325 * slideNum}px);
+	transition: 0.3s;
 `;
 
 const btnCommonCss = css`
