@@ -148,6 +148,12 @@ export default function CarouselSlide() {
 const carouselWrapCss = css`
 	position: relative;
 	width: 100%;
+
+	.react-multi-carousel-dot-list {
+		bottom: 65px;
+		right: 38%;
+		justify-content: flex-end;
+	}
 `;
 
 const imgWrapCss = css`
