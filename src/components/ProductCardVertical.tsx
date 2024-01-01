@@ -39,8 +39,8 @@ export default function ProductCardVertical({ data, onClick }: ProductCardVertic
 	return (
 		<div
 			css={productWrapCss}
-			onMouseEnter={() => setIsHover(prev => true)}
-			onMouseLeave={() => setIsHover(prev => false)}
+			onMouseEnter={() => setIsHover(() => true)}
+			onMouseLeave={() => setIsHover(() => false)}
 			onClick={() => onClick && onClick(data.productVersionGroupSeq)}
 		>
 			<ProductImg
@@ -88,12 +88,13 @@ export default function ProductCardVertical({ data, onClick }: ProductCardVertic
 const productWrapCss = css`
 	position: relative;
 	width: 275px;
+	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	overflow: hidden;
 	background-color: white;
 	border: 1px solid #ccc;
-	overflow: hidden;
 	cursor: pointer;
 `;
 
