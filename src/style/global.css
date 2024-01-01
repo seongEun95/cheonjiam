@@ -2,7 +2,9 @@ body {
 	font-family: 'Poppins', 'Noto Sans KR', sans-serif;
 }
 
-h2 {
+h2,
+h3,
+h4 {
 	font-family: 'Nanum Myeongjo';
 }
 * {
