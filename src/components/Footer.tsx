@@ -31,7 +31,24 @@ export default function Footer() {
 						</Link>
 					</li>
 				</ul>
-				<SelectBox size="medium" title="FAMILY SITE" optionArray={['스키니랩', '피트니스 스토어', '천지양']} />
+				<SelectBox
+					size="medium"
+					title="FAMILY SITE"
+					optionArray={[
+						{
+							userValue: '천지양',
+							dataValue: 'cheonjiyam',
+						},
+						{
+							userValue: '스키니랩',
+							dataValue: 'skinyrap',
+						},
+						{
+							userValue: '피트니스 스토어',
+							dataValue: 'fitness store',
+						},
+					]}
+				/>
 			</div>
 
 			<div css={footerBottomCss}>
