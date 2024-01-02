@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom';
 import { IoIosArrowDown } from 'react-icons/io';
 import { useRef, useState } from 'react';
 
-type SelectBoxSize = 'small' | 'medium' | 'large';
+export type SelectBoxSize = 'small' | 'medium' | 'large';
 
 type SelectBoxProps = {
 	size: SelectBoxSize;
-	optionArray: string[];
+	optionArray: {
+		userValue: string;
+		dataValue: string;
+	}[];
 	title: string;
 };
 
@@ -29,24 +32,24 @@ export default function SelectBox({ size = 'medium', optionArray, title }: Selec
 	};
 
 	return (
-		<div css={familySiteWrapCss}>
-			<h3 onClick={handleClickShowOption} css={[familySiteTitleWrapCss, getCssTitleWidthSize(size)]}>
+		<div css={selectBoxWrapCss}>
+			<button onClick={handleClickShowOption} css={[selectBoxTitleWrapCss, getCssTitleWidthSize(size)]}>
 				<span css={[getCssTitleSize(size)]}>{optionTitle}</span>
 				<IoIosArrowDown fill="#666" size={18} css={arrowCss(isShowOption)} />
-			</h3>
+			</button>
 
-			<div css={familySiteListWrapCss(isShowOption, optionHeight)}>
-				<ul ref={optionRef} css={[familySiteListCss, getCssListSize(size)]}>
+			<div css={selectBoxListWrapCss(isShowOption, optionHeight)}>
+				<ul ref={optionRef} css={[selectBoxListCss, getCssListSize(size)]}>
 					{optionArray.map((option, index) => (
 						<li key={index}>
 							<Link
 								onClick={() => {
-									handleClickChangeTitle(option);
+									handleClickChangeTitle(option.userValue);
 								}}
-								css={[familySiteListTxtCss, getCssListTxtSize(size)]}
+								css={[selectBoxListTxtCss, getCssListTxtSize(size)]}
 								to={'#'}
 							>
-								{option}
+								{option.userValue}
 							</Link>
 						</li>
 					))}
@@ -56,12 +59,13 @@ export default function SelectBox({ size = 'medium', optionArray, title }: Selec
 	);
 }
 
-const familySiteWrapCss = css`
+const selectBoxWrapCss = css`
 	position: relative;
 	transition: all 0.3s;
 `;
 
-const familySiteTitleWrapCss = css`
+const selectBoxTitleWrapCss = css`
+	font-family: 'Nanum Myeongjo';
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -71,50 +75,50 @@ const familySiteTitleWrapCss = css`
 const getCssTitleWidthSize = (size: SelectBoxSize) => {
 	switch (size) {
 		case 'small':
-			return familySiteSmallTitleCss;
+			return selectBoxSmallTitleCss;
 		case 'medium':
-			return familySiteMediumTitleCss;
+			return selectBoxMediumTitleCss;
 		case 'large':
-			return familySiteLargeTitleCss;
+			return selectBoxLargeTitleCss;
 	}
 };
 
-const familySiteSmallTitleCss = css`
+const selectBoxSmallTitleCss = css`
 	width: 120px;
 `;
 
-const familySiteMediumTitleCss = css`
+const selectBoxMediumTitleCss = css`
 	width: 230px;
 `;
 
-const familySiteLargeTitleCss = css`
+const selectBoxLargeTitleCss = css`
 	width: 300px;
 `;
 
 const getCssTitleSize = (size: SelectBoxSize) => {
 	switch (size) {
 		case 'small':
-			return familySiteTitleSmallCss;
+			return selectBoxTitleSmallCss;
 		case 'medium':
-			return familySiteTitleMediumCss;
+			return selectBoxTitleMediumCss;
 		case 'large':
-			return familySiteTitleLargeCss;
+			return selectBoxTitleLargeCss;
 	}
 };
 
-const familySiteTitleSmallCss = css`
+const selectBoxTitleSmallCss = css`
 	height: 30px;
 	font-size: 14px;
 	line-height: 30px;
 `;
 
-const familySiteTitleMediumCss = css`
+const selectBoxTitleMediumCss = css`
 	height: 50px;
 	font-size: 16px;
 	line-height: 50px;
 `;
 
-const familySiteTitleLargeCss = css`
+const selectBoxTitleLargeCss = css`
 	height: 70px;
 	font-size: 18px;
 	line-height: 70px;
@@ -125,7 +129,7 @@ const arrowCss = (isShow: boolean) => css`
 	transition: all 0.3s;
 `;
 
-const familySiteListWrapCss = (isShow: boolean, optionHeight: number | undefined) => css`
+const selectBoxListWrapCss = (isShow: boolean, optionHeight: number | undefined) => css`
 	position: absolute;
 	width: 100%;
 	height: ${isShow ? optionHeight && optionHeight + 2 : 0}px;
@@ -133,7 +137,7 @@ const familySiteListWrapCss = (isShow: boolean, optionHeight: number | undefined
 	transition: all 0.3s;
 `;
 
-const familySiteListCss = css`
+const selectBoxListCss = css`
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
@@ -145,30 +149,30 @@ const familySiteListCss = css`
 const getCssListSize = (size: SelectBoxSize) => {
 	switch (size) {
 		case 'small':
-			return familySiteSmallListCss;
+			return selectBoxSmallListCss;
 		case 'medium':
-			return familySiteMediumListCss;
+			return selectBoxMediumListCss;
 		case 'large':
-			return familySiteLargeListCss;
+			return selectBoxLargeListCss;
 	}
 };
 
-const familySiteSmallListCss = css`
+const selectBoxSmallListCss = css`
 	gap: 12px;
 	padding: 12px;
 `;
 
-const familySiteMediumListCss = css`
+const selectBoxMediumListCss = css`
 	gap: 20px;
 	padding: 20px;
 `;
 
-const familySiteLargeListCss = css`
+const selectBoxLargeListCss = css`
 	gap: 28px;
 	padding: 28px;
 `;
 
-const familySiteListTxtCss = css`
+const selectBoxListTxtCss = css`
 	font-family: 'Nanum Myeongjo';
 	color: #000;
 	transition: 0.3s;
@@ -182,22 +186,22 @@ const familySiteListTxtCss = css`
 const getCssListTxtSize = (size: SelectBoxSize) => {
 	switch (size) {
 		case 'small':
-			return familySiteListSmallTxtCss;
+			return selectBoxListSmallTxtCss;
 		case 'medium':
-			return familySiteListMediumTxtCss;
+			return selectBoxListMediumTxtCss;
 		case 'large':
-			return familySiteListLargeTxtCss;
+			return selectBoxListLargeTxtCss;
 	}
 };
 
-const familySiteListSmallTxtCss = css`
+const selectBoxListSmallTxtCss = css`
 	font-size: 14px;
 `;
 
-const familySiteListMediumTxtCss = css`
+const selectBoxListMediumTxtCss = css`
 	font-size: 16px;
 `;
 
-const familySiteListLargeTxtCss = css`
+const selectBoxListLargeTxtCss = css`
 	font-size: 18px;
 `;
