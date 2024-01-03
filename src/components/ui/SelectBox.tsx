@@ -1,56 +1,60 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { Link } from 'react-router-dom';
 import { IoIosArrowDown } from 'react-icons/io';
 import { useRef, useState } from 'react';
 
 export type SelectBoxSize = 'small' | 'medium' | 'large';
 
+export type SelectBoxOption = {
+	id: string;
+	name: string;
+	value: string;
+};
+export type SelectBoxOptionList = SelectBoxOption[];
+
 type SelectBoxProps = {
 	size: SelectBoxSize;
-	optionArray: {
-		userValue: string;
-		dataValue: string;
-	}[];
-	title: string;
+	optionData: SelectBoxOptionList;
+	value: string;
+	defaultValue?: string;
+	onClickMenu: (selectedOption: string) => void;
 };
 
-export default function SelectBox({ size = 'medium', optionArray, title }: SelectBoxProps) {
+export default function SelectBox({
+	size = 'medium',
+	optionData,
+	value,
+	defaultValue = '',
+	onClickMenu,
+}: SelectBoxProps) {
 	const [isShowOption, setIsShowOption] = useState<boolean>(false);
 	const optionRef = useRef<HTMLUListElement | null>(null);
 	const optionHeight = optionRef.current?.clientHeight;
-	const [optionTitle, setOptionTitle] = useState(title);
 
 	const handleClickShowOption = () => {
 		setIsShowOption(prev => !prev);
 	};
 
-	const handleClickChangeTitle = (option: string) => {
-		setOptionTitle(option);
-		setIsShowOption(false);
+	const handleClickMenu = (selectedOption: string) => {
+		onClickMenu(selectedOption);
+		setIsShowOption(() => false);
 	};
 
 	return (
 		<div css={selectBoxWrapCss}>
 			<button onClick={handleClickShowOption} css={[selectBoxTitleWrapCss, getCssTitleWidthSize(size)]}>
-				<span css={[getCssTitleSize(size)]}>{optionTitle}</span>
+				<span css={[getCssTitleSize(size)]}>{optionData.find(item => item.value === value)?.name || defaultValue}</span>
 				<IoIosArrowDown fill="#666" size={18} css={arrowCss(isShowOption)} />
 			</button>
 
 			<div css={selectBoxListWrapCss(isShowOption, optionHeight)}>
 				<ul ref={optionRef} css={[selectBoxListCss, getCssListSize(size)]}>
-					{optionArray.map((option, index) => (
-						<li key={index}>
-							<Link
-								onClick={() => {
-									handleClickChangeTitle(option.userValue);
-								}}
-								css={[selectBoxListTxtCss, getCssListTxtSize(size)]}
-								to={'#'}
-							>
-								{option.userValue}
-							</Link>
+					{optionData.map(({ id, name, value }) => (
+						<li key={id}>
+							<button css={[selectBoxListTxtCss, getCssListTxtSize(size)]} onClick={() => handleClickMenu(value)}>
+								{name}
+							</button>
 						</li>
 					))}
 				</ul>

@@ -3,9 +3,22 @@
 import { jsx, css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import { IoMdArrowDropright } from 'react-icons/io';
-import SelectBox from './ui/SelectBox';
+import SelectBox, { SelectBoxOptionList } from './ui/SelectBox';
+import { useState } from 'react';
+
+const FOOTER_SELECT_OPTION_MENU: SelectBoxOptionList = [
+	{ id: '1', name: '천지양', value: 'cheonjiyam' },
+	{ id: '2', name: '스키니랩', value: 'skinyrap' },
+	{ id: '3', name: '피트니스 스토어', value: 'fitness store' },
+];
 
 export default function Footer() {
+	const [selectedOption, setSelectedOption] = useState<string>('');
+
+	const handleChangeSelectBox = (selectedOption: string) => {
+		setSelectedOption(() => selectedOption);
+	};
+
 	return (
 		<footer css={footerWrapCss}>
 			<div css={footerTopCss}>
@@ -33,21 +46,10 @@ export default function Footer() {
 				</ul>
 				<SelectBox
 					size="medium"
-					title="FAMILY SITE"
-					optionArray={[
-						{
-							userValue: '천지양',
-							dataValue: 'cheonjiyam',
-						},
-						{
-							userValue: '스키니랩',
-							dataValue: 'skinyrap',
-						},
-						{
-							userValue: '피트니스 스토어',
-							dataValue: 'fitness store',
-						},
-					]}
+					value={selectedOption}
+					optionData={FOOTER_SELECT_OPTION_MENU}
+					defaultValue="FAMILY SITE"
+					onClickMenu={handleChangeSelectBox}
 				/>
 			</div>
 
