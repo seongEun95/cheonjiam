@@ -124,7 +124,6 @@ export default function Footer() {
 const footerWrapCss = css`
 	width: 96%;
 	max-width: 1100px;
-	margin: 0 auto;
 	padding: 30px 0 90px;
 `;
 
