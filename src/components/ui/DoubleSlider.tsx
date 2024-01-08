@@ -14,8 +14,10 @@ export type SectionList = Section[];
 export type SelectedRange = [Section, Section];
 
 const createSectionList = (min: number, max: number): SectionList => {
-	const sectionAmount = (max - min) / 15;
-	return new Array(16).fill(null).map((_, idx) => ({ id: idx, price: min + sectionAmount * idx, selected: true }));
+	const sectionAmount = Math.ceil((max - min) / 15);
+	return new Array(16)
+		.fill(null)
+		.map((_, idx) => ({ id: idx, price: idx === 15 ? max : min + sectionAmount * idx, selected: true }));
 };
 
 const getSelectedSection = (sectionList: SectionList): SelectedRange => {
