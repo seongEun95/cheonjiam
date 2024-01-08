@@ -4,14 +4,14 @@ import { jsx, css } from '@emotion/react';
 import DoubleSlider, { SelectedRange } from '../components/ui/DoubleSlider';
 import { useState } from 'react';
 
-const min = 12000;
-const max = 180000;
+const min = 0;
+const max = 160000;
 
 export default function TestPage() {
 	const [range, setRange] = useState([min, max]);
 
 	const handleChangeRange = (range: SelectedRange) => {
-		// console.log(range);
+		console.log(range);
 		setRange([range[0].price, range[1].price]);
 
 		// API 요청
