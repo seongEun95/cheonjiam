@@ -21,6 +21,15 @@ type DragRefType = {
 	newSelectedRight: Section | null;
 };
 
+const initialDragRef = {
+	isDragging: false,
+	offset: 0,
+	draggingSide: 'LEFT',
+	result: [],
+	newSelectedLeft: null,
+	newSelectedRight: null,
+};
+
 const createSectionList = (min: number, max: number): SectionList => {
 	const sectionAmount = Math.ceil((max - min) / 16);
 	return new Array(17)
@@ -35,6 +44,7 @@ const getSelectedSection = (sectionList: SectionList): SelectedRange => {
 };
 
 export default function DoubleSlider({ min, max, onChangeRange }: DoubleSliderProps) {
+	console.log('render');
 	const [sectionList, setSectionList] = useState<SectionList>(createSectionList(min, max));
 	const selectedLeft = sectionList.find(section => section.selected);
 	const selectedRight = [...sectionList].reverse().find(section => section.selected);
@@ -46,9 +56,8 @@ export default function DoubleSlider({ min, max, onChangeRange }: DoubleSliderPr
 		const leftAbs = Math.abs(selectedsection.id - selectedLeft!.id);
 		const rightAbs = Math.abs(selectedRight!.id - selectedsection.id);
 		const isLeft = leftAbs <= rightAbs;
-		let newSectionList: SectionList;
 
-		newSectionList = sectionList.map(section => ({
+		const newSectionList = sectionList.map(section => ({
 			...section,
 			selected: isLeft
 				? section.id >= selectedsection.id && section.id <= selectedRight!.id
@@ -60,14 +69,7 @@ export default function DoubleSlider({ min, max, onChangeRange }: DoubleSliderPr
 	};
 
 	// 드래그 관련
-	const draggRef = useRef<DragRefType>({
-		isDragging: false,
-		offset: 0,
-		draggingSide: 'LEFT',
-		result: [],
-		newSelectedLeft: null,
-		newSelectedRight: null,
-	});
+	const draggRef = useRef<DragRefType>(initialDragRef);
 
 	const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>, direction: string) => {
 		console.log('mousedown');
@@ -87,13 +89,12 @@ export default function DoubleSlider({ min, max, onChangeRange }: DoubleSliderPr
 		// 32px 이하로 움직이면 리턴
 		if (Math.abs(movedPx) < 32) return;
 
-		let newSectionList: SectionList;
 		const movedCount = movedPx > 0 ? Math.floor(movedPx / 32) : Math.ceil(movedPx / 32);
 		const isLeft = draggRef.current.draggingSide === 'LEFT';
 		const currentSelectedLeft = draggRef.current.newSelectedLeft || selectedLeft;
 		const currentSelectedRight = draggRef.current.newSelectedRight || selectedRight;
 
-		newSectionList = sectionList.map(section => ({
+		const newSectionList = sectionList.map(section => ({
 			...section,
 			selected: isLeft
 				? section.id >= currentSelectedLeft!.id + movedCount && section.id <= currentSelectedRight!.id
@@ -103,26 +104,22 @@ export default function DoubleSlider({ min, max, onChangeRange }: DoubleSliderPr
 		// console.log(newSectionList);
 
 		// 예외체크
-		const isAllNotSelected = newSectionList.every(section => !section.selected);
+		// const isAllNotSelected = newSectionList.every(section => !section.selected);
 		const isLessThanTwoSelected = newSectionList.filter(section => section.selected).length < 2;
-		if (isAllNotSelected || isLessThanTwoSelected) return;
+		if (isLessThanTwoSelected) return;
 
 		setSectionList(newSectionList);
+
 		draggRef.current.result = newSectionList;
 		draggRef.current.newSelectedLeft = newSectionList.find(section => section.selected)!;
 		draggRef.current.newSelectedRight = [...newSectionList].reverse().find(section => section.selected)!;
 		draggRef.current.offset = e.clientX;
 	};
 
-	const handleMouseUp = (e: any) => {
+	const handleMouseUp = () => {
 		console.log('mouseup');
 		draggRef.current.result.length !== 0 && onChangeRange && onChangeRange(getSelectedSection(draggRef.current.result));
-		draggRef.current.isDragging = false;
-		draggRef.current.offset = 0;
-		draggRef.current.draggingSide = '';
-		draggRef.current.result = [];
-		draggRef.current.newSelectedLeft = null;
-		draggRef.current.newSelectedRight = null;
+		draggRef.current = initialDragRef;
 		document.removeEventListener('mousemove', handleMouseMove);
 		document.removeEventListener('mouseup', handleMouseUp);
 	};
@@ -130,12 +127,13 @@ export default function DoubleSlider({ min, max, onChangeRange }: DoubleSliderPr
 	return (
 		<div css={DoubleSliderCss}>
 			<div css={lineCss}>
-				<div css={[dotCommonCss, dotLeftCss(selectedLeft?.id || 0)]} onMouseDown={e => handleMouseDown(e, 'LEFT')}>
+				<div css={[dotCommonCss, dotCss(selectedLeft?.id || 0)]} onMouseDown={e => handleMouseDown(e, 'LEFT')}>
 					<div />
 				</div>
 				<div css={sectionWrapperCss}>
 					{sectionList.map((section, idx) => {
 						if (idx === 16) return null;
+
 						return (
 							<div
 								css={sectionCss(section.selected && sectionList[idx + 1].selected)}
@@ -147,7 +145,7 @@ export default function DoubleSlider({ min, max, onChangeRange }: DoubleSliderPr
 						);
 					})}
 				</div>
-				<div css={[dotCommonCss, dotRightCss(selectedRight?.id || 16)]} onMouseDown={e => handleMouseDown(e, 'RIGHT')}>
+				<div css={[dotCommonCss, dotCss(selectedRight?.id || 16)]} onMouseDown={e => handleMouseDown(e, 'RIGHT')}>
 					<div />
 				</div>
 			</div>
@@ -195,10 +193,7 @@ const dotCommonCss = css`
 	}
 `;
 
-const dotLeftCss = (position: number) => css`
-	left: ${position * 32 - 16}px;
-`;
-const dotRightCss = (position: number) => css`
+const dotCss = (position: number) => css`
 	left: ${position * 32 - 16}px;
 `;
 
@@ -215,7 +210,7 @@ const sectionCss = (selected: boolean) => css`
 	align-items: center;
 	min-width: 32px;
 	height: 10px;
-	padding: 0 0 4px 0;
+	padding: 0 0 4px 0; // 유저가 클릭하기 쉽게 하기 위해 padding 추가
 
 	div {
 		width: 100%;
