@@ -33,11 +33,7 @@ export default function ProductCardHorizontal({ ProductData }: { ProductData: Pr
 			onMouseLeave={handleMouseLeave}
 			onClick={() => handleClickNavigate(ProductData.productVersionGroupSeq)}
 		>
-			<ProductImg
-				src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${ProductData.productSeq}/image/1`}
-				alt={ProductData.name}
-				isHover={isHover}
-			/>
+			<ProductImg ProductData={ProductData} isHover={isHover} />
 
 			<div css={txtWrapCss}>
 				<div>
