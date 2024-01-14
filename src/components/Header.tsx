@@ -3,12 +3,16 @@
 import { jsx, css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import userMenuData from '../data/userMenuData.json';
+import { useSelector } from 'react-redux';
 
 export default function UserMenu() {
+	const cartItems = useSelector((state: any) => state.cart.items);
+
 	return (
 		<ul css={userMenuWrapCss}>
 			{userMenuData.map((icon, index) => (
-				<li key={index}>
+				<li key={index} css={iconListCss}>
+					{index === 2 && <span css={cartItemsLengthCss}>{cartItems.length}</span>}
 					<Link to={icon.to}>
 						<img src={icon.imgSrc} alt={icon.alt} />
 					</Link>
@@ -24,4 +28,21 @@ const userMenuWrapCss = css`
 	align-items: center;
 	gap: 22px;
 	padding: 30px;
+`;
+
+const iconListCss = css`
+	position: relative;
+`;
+
+const cartItemsLengthCss = css`
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	line-height: 20px;
+	color: #fff;
+	background-color: #d53147;
+	border-radius: 100%;
 `;
