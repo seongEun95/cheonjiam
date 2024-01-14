@@ -5,14 +5,28 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TiHeartOutline } from 'react-icons/ti';
 import { TiHeartFullOutline } from 'react-icons/ti';
+import { useDispatch } from 'react-redux';
+import { Product } from '../../types/Product.type';
+import { addItems } from '../../redux/slice/cartSlice';
 
 type ProductImgProps = {
-	src: string;
-	alt: string;
+	ProductData: Product;
 	isHover: boolean;
 };
 
-export default function ProductImg({ src, alt, isHover }: ProductImgProps) {
+export default function ProductImg({ ProductData, isHover }: ProductImgProps) {
+	const dispatch = useDispatch();
+
+	const cartData = {
+		src: `https://www.cheonjiyang.co.kr/api/attach/view/product/${ProductData.productSeq}/image/1`,
+		name: ProductData.name,
+		productId: ProductData.productVersionGroupSeq,
+		normalPrice: ProductData.normalPrice,
+		memberPrice: ProductData.memberPrice,
+		iconClsf: ProductData.iconClsf,
+		brandName: ProductData.brandName,
+	};
+
 	const navigate = useNavigate();
 	const [isHeartFilled, setIsHeartFilled] = useState(false);
 
@@ -25,9 +39,9 @@ export default function ProductImg({ src, alt, isHover }: ProductImgProps) {
 		navigate('/auth/signin');
 	};
 
-	const handleClickRedirectToCart = (e: React.MouseEvent<HTMLDivElement>) => {
+	const handleClickAddCart = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
-		navigate('/cart');
+		dispatch(addItems(cartData));
 	};
 
 	const heartToggle = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -37,14 +51,18 @@ export default function ProductImg({ src, alt, isHover }: ProductImgProps) {
 
 	return (
 		<div css={imgWrapCss}>
-			<img css={imgCss(isHover)} src={src} alt={alt} />
+			<img
+				css={imgCss(isHover)}
+				src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${ProductData.productSeq}/image/1`}
+				alt={ProductData.name}
+			/>
 
 			<div onClick={handleClickStopNavigation} css={iconWrapCss(isHover)}>
 				<div css={paymentIconCss} onClick={handleClickRedirectToSignin}>
 					<img src="/img/icon-payment.png" alt="결제하기" />
 				</div>
-				<div onClick={handleClickRedirectToCart}>
-					<img src="/img/icon-gift.png" alt="선물하기" />
+				<div onClick={handleClickAddCart}>
+					<img src="/img/icon-cart.png" alt="선물하기" />
 				</div>
 				<div css={heartIconCss} onClick={heartToggle}>
 					{isHeartFilled ? <TiHeartFullOutline fill="#d53147" size={24} /> : <TiHeartOutline size={24} />}
