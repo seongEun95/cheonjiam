@@ -18,13 +18,17 @@ export default function ProductImg({ ProductData, isHover }: ProductImgProps) {
 	const dispatch = useDispatch();
 
 	const cartData = {
-		src: `https://www.cheonjiyang.co.kr/api/attach/view/product/${ProductData.productSeq}/image/1`,
-		name: ProductData.name,
-		productId: ProductData.productVersionGroupSeq,
-		normalPrice: ProductData.normalPrice,
-		memberPrice: ProductData.memberPrice,
-		iconClsf: ProductData.iconClsf,
-		brandName: ProductData.brandName,
+		id: ProductData.productVersionGroupSeq,
+		isChecked: false,
+		product: {
+			name: ProductData.name,
+			normalPrice: ProductData.normalPrice,
+			memberPrice: ProductData.memberPrice,
+			iconClsf: ProductData.iconClsf,
+			brandName: ProductData.brandName,
+			productSeq: ProductData.productSeq,
+		},
+		productCount: 1,
 	};
 
 	const navigate = useNavigate();
