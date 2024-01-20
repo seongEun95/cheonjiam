@@ -1,10 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Product } from '../../types/Product.type';
 
-interface cart {
-	items: string[];
-}
+export type Cart = {
+	id: number;
+	isChecked: boolean;
+	product: Product;
+	productCount: number;
+};
 
-const initialState: cart = {
+export type CartList = Cart[];
+
+type CartState = {
+	items: CartList;
+};
+
+const initialState: CartState = {
 	items: [],
 };
 
@@ -13,14 +23,53 @@ const cartSlice = createSlice({
 	initialState,
 	reducers: {
 		addItems: (state, action) => {
-			state.items.push(action.payload);
+			const newItem = action.payload;
+			const isItemExist = state.items.find(item => item.id === newItem.id);
+			if (!isItemExist) {
+				state.items.push(newItem);
+			} else {
+				const { id } = action.payload;
+				const findItem = state.items.find(item => item.id === id);
+
+				if (findItem) {
+					findItem.productCount += 1;
+				}
+			}
 		},
 
 		removeItems: (state, action) => {
-			state.items = state.items.filter((item: any) => item.id !== action.payload.id);
+			const id = action.payload;
+			state.items = state.items.filter(item => item.id !== id);
+		},
+
+		plusProductCount: (state, action) => {
+			const id = action.payload;
+			const findItem = state.items.find(item => item.id === id);
+
+			if (findItem) {
+				findItem.productCount += 1;
+			}
+		},
+
+		minusProductCount: (state, action) => {
+			const id = action.payload;
+			const findItem = state.items.find(item => item.id === id);
+
+			if (findItem && findItem.productCount > 1) {
+				findItem.productCount -= 1;
+			}
+		},
+
+		isCheckedChange: (state, action) => {
+			const id = action.payload;
+			const findItem = state.items.find(item => item.id === id);
+
+			if (findItem) {
+				findItem.isChecked = !findItem.isChecked;
+			}
 		},
 	},
 });
 
-export const { addItems, removeItems } = cartSlice.actions;
+export const { addItems, removeItems, plusProductCount, minusProductCount, isCheckedChange } = cartSlice.actions;
 export default cartSlice.reducer;
