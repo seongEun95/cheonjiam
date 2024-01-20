@@ -21,13 +21,17 @@ export default function ProductCardVertical({ data, onClick }: ProductCardVertic
 	const dispatch = useDispatch();
 
 	const cartData = {
-		src: `https://www.cheonjiyang.co.kr/api/attach/view/product/${data.productSeq}/image/1`,
-		name: data.name,
-		productId: data.productVersionGroupSeq,
-		normalPrice: data.normalPrice,
-		memberPrice: data.memberPrice,
-		iconClsf: data.iconClsf,
-		brandName: data.brandName,
+		id: data.productVersionGroupSeq,
+		isChecked: false,
+		product: {
+			name: data.name,
+			normalPrice: data.normalPrice,
+			memberPrice: data.memberPrice,
+			iconClsf: data.iconClsf,
+			brandName: data.brandName,
+			productSeq: data.productSeq,
+		},
+		productCount: 1,
 	};
 
 	const [isHover, setIsHover] = useState(false);
