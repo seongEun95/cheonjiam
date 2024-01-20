@@ -4,15 +4,16 @@ import { jsx, css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 import userMenuData from '../data/userMenuData.json';
 import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
-export default function UserMenu() {
-	const cartItems = useSelector((state: any) => state.cart.items);
+export default function Header() {
+	const cartItems = useSelector((state: RootState) => state.cart.items);
 
 	return (
 		<ul css={userMenuWrapCss}>
 			{userMenuData.map((icon, index) => (
 				<li key={index} css={iconListCss}>
-					{index === 2 && <span css={cartItemsLengthCss}>{cartItems.length}</span>}
+					{icon.to === '/cart' && <span css={cartItemsLengthCss}>{cartItems.length}</span>}
 					<Link to={icon.to}>
 						<img src={icon.imgSrc} alt={icon.alt} />
 					</Link>
