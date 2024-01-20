@@ -53,8 +53,6 @@ export default function RangeSlider({ label, min, max, onChangeRange }: RangeSli
 
 	// 라인을 클릭했을 때 왼쪽핸들, 오른쪽 핸들 계산 함수
 	const handleClickSection = (selectedsection: Section) => {
-		if (dragRef.current.isDragging) return; // isDragging이 true이면 리턴으로 아래코드 실행 X
-
 		const leftAbs = Math.abs(selectedsection.id - selectedLeft.id); // 클릭한 섹션의 id값 - 왼쪽 섹션의 id값
 		const rightAbs = Math.abs(selectedRight.id - selectedsection.id); // 오른쪽 섹션의 id값 - 클릭한 섹션의 id값
 		const isLeft = leftAbs <= rightAbs; // 왼쪽인가 = 왼쪽절대값 <= 오른쪽 절대값
