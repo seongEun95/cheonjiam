@@ -5,13 +5,15 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import { useState } from 'react';
 import ProductLabel from '../horizontalCardUi/ProductLabel';
-import { Cart, isCheckedChange, removeItems } from '../../redux/slice/cartSlice';
+import { Cart, isCheckedChange, minusProductCount, plusProductCount, removeItems } from '../../redux/slice/cartSlice';
 import { useDispatch } from 'react-redux';
 import Button from './Button';
 import ProductCount from './ProductCount';
 import GiftBtn from './GiftBtn';
+import { useNavigate } from 'react-router-dom';
 
 export default function CartItem({ id, isChecked, product, productCount }: Cart) {
+	const navigate = useNavigate();
 	const [isLike, setIsLike] = useState(false);
 
 	const dispatch = useDispatch();
@@ -29,11 +31,24 @@ export default function CartItem({ id, isChecked, product, productCount }: Cart)
 		dispatch(isCheckedChange(id));
 	};
 
+	const handleClickPlusProductCount = () => {
+		dispatch(plusProductCount(id));
+	};
+
+	const handleClickMinusProductCount = () => {
+		dispatch(minusProductCount(id));
+	};
+
+	const handleClickNavigate = (productId: number) => {
+		navigate(`/red_ginseng/${productId}`);
+	};
+
 	return (
 		<div css={itemCss} key={id}>
 			<div>
 				<input onChange={handleChangeChecked} css={checkboxCss} type="checkbox" />
 				<img
+					onClick={() => handleClickNavigate(product.productVersionGroupSeq)}
 					css={imgCss}
 					src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${product.productSeq}/image/1`}
 					alt={product.name}
@@ -60,7 +75,11 @@ export default function CartItem({ id, isChecked, product, productCount }: Cart)
 					</div>
 					<div css={priceWrapCss}>
 						<div css={priceCss}>{(product.normalPrice * productCount).toLocaleString()}원</div>
-						<ProductCount id={id} productCount={productCount} />
+						<ProductCount
+							productCount={productCount}
+							onClickLeft={handleClickMinusProductCount}
+							onClickRight={handleClickPlusProductCount}
+						/>
 					</div>
 				</div>
 
@@ -87,6 +106,7 @@ const checkboxCss = css`
 const imgCss = css`
 	width: 120px;
 	height: 120px;
+	cursor: pointer;
 `;
 
 const firstLineCss = css`
