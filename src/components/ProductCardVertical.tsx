@@ -10,7 +10,7 @@ import { FaRegHeart } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { addItems } from '../redux/slice/cartSlice';
+import { Cart, addItems } from '../redux/slice/cartSlice';
 
 interface ProductCardVerticalProps {
 	data: Product;
@@ -19,20 +19,6 @@ interface ProductCardVerticalProps {
 
 export default function ProductCardVertical({ data, onClick }: ProductCardVerticalProps) {
 	const dispatch = useDispatch();
-
-	const cartData = {
-		id: data.productVersionGroupSeq,
-		isChecked: false,
-		product: {
-			name: data.name,
-			normalPrice: data.normalPrice,
-			memberPrice: data.memberPrice,
-			iconClsf: data.iconClsf,
-			brandName: data.brandName,
-			productSeq: data.productSeq,
-		},
-		productCount: 1,
-	};
 
 	const [isHover, setIsHover] = useState(false);
 	const [isLike, setIsLike] = useState(false);
@@ -51,6 +37,12 @@ export default function ProductCardVertical({ data, onClick }: ProductCardVertic
 
 	const handleClickAddCart = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
+		const cartData: Cart = {
+			id: data.productVersionGroupSeq,
+			isChecked: false,
+			product: data,
+			productCount: 1,
+		};
 		dispatch(addItems(cartData));
 	};
 
