@@ -24,11 +24,17 @@ export default function Header() {
 }
 
 const userMenuWrapCss = css`
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 10;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 	gap: 22px;
+	width: 100%;
 	padding: 30px;
+	background-color: #fff;
 `;
 
 const iconListCss = css`
