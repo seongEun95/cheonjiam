@@ -26,6 +26,7 @@ const headerCss = css`
 	width: 180px;
 	padding: 40px 25px 0;
 	box-sizing: border-box;
+	z-index: 11;
 `;
 
 const logoWrapCss = css`
