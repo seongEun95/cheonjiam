@@ -7,29 +7,15 @@ import { TiHeartOutline } from 'react-icons/ti';
 import { TiHeartFullOutline } from 'react-icons/ti';
 import { useDispatch } from 'react-redux';
 import { Product } from '../../types/Product.type';
-import { addItems } from '../../redux/slice/cartSlice';
+import { Cart, addItems } from '../../redux/slice/cartSlice';
 
 type ProductImgProps = {
-	ProductData: Product;
+	productData: Product;
 	isHover: boolean;
 };
 
-export default function ProductImg({ ProductData, isHover }: ProductImgProps) {
+export default function ProductImg({ productData, isHover }: ProductImgProps) {
 	const dispatch = useDispatch();
-
-	const cartData = {
-		id: ProductData.productVersionGroupSeq,
-		isChecked: false,
-		product: {
-			name: ProductData.name,
-			normalPrice: ProductData.normalPrice,
-			memberPrice: ProductData.memberPrice,
-			iconClsf: ProductData.iconClsf,
-			brandName: ProductData.brandName,
-			productSeq: ProductData.productSeq,
-		},
-		productCount: 1,
-	};
 
 	const navigate = useNavigate();
 	const [isHeartFilled, setIsHeartFilled] = useState(false);
@@ -45,6 +31,12 @@ export default function ProductImg({ ProductData, isHover }: ProductImgProps) {
 
 	const handleClickAddCart = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
+		const cartData: Cart = {
+			id: productData.productVersionGroupSeq,
+			isChecked: false,
+			product: productData,
+			productCount: 1,
+		};
 		dispatch(addItems(cartData));
 	};
 
@@ -57,8 +49,8 @@ export default function ProductImg({ ProductData, isHover }: ProductImgProps) {
 		<div css={imgWrapCss}>
 			<img
 				css={imgCss(isHover)}
-				src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${ProductData.productSeq}/image/1`}
-				alt={ProductData.name}
+				src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${productData.productSeq}/image/1`}
+				alt={productData.name}
 			/>
 
 			<div onClick={handleClickStopNavigation} css={iconWrapCss(isHover)}>
