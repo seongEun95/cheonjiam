@@ -2,116 +2,98 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { useParams } from 'react-router-dom';
-import { ProductList } from '../types/Product.type';
 import { PRODUCT_DATA } from '../data/productSample';
 import { useState } from 'react';
 import ProductLabel from '../components/horizontalCardUi/ProductLabel';
-import ProductCount from '../components/ui/ProductCount';
-import { CiCircleMinus, CiCirclePlus } from 'react-icons/ci';
 import Button from '../components/ui/Button';
 import GiftBtn from '../components/ui/GiftBtn';
 import { useDispatch } from 'react-redux';
-import { addItems } from '../redux/slice/cartSlice';
+import { Cart, addItems } from '../redux/slice/cartSlice';
+import ProductCount from '../components/ui/ProductCount';
 
 export default function DetailPage() {
 	const { id } = useParams();
 
 	const dispatch = useDispatch();
-	const [cartCount, setCartCount] = useState(1);
-	const [data] = useState<any>(PRODUCT_DATA.filter(item => item.productVersionGroupSeq === Number(id)));
-
-	console.log(data);
-
-	const cartData = {
-		id: id,
-		isChecked: false,
-		product: {
-			name: data[0].name,
-			normalPrice: data[0].normalPrice,
-			memberPrice: data[0].memberPrice,
-			iconClsf: data[0].iconClsf,
-			brandName: data[0].brandName,
-			productSeq: data[0].productSeq,
-		},
-		productCount: cartCount,
-	};
+	const [productCount, setproductCount] = useState(1);
+	const [data] = PRODUCT_DATA.filter(item => item.productVersionGroupSeq === Number(id));
 
 	const handleClickAddCart = () => {
+		const cartData: Cart = {
+			id: data.productVersionGroupSeq,
+			isChecked: false,
+			product: data,
+			productCount,
+		};
 		dispatch(addItems(cartData));
 	};
 
 	const handleClickMinusProductCount = () => {
-		setCartCount(prev => (prev > 1 ? prev - 1 : prev));
+		setproductCount(prev => (prev > 1 ? prev - 1 : prev));
 	};
 
 	const handleClickPlusProductCount = () => {
-		setCartCount(prev => prev + 1);
+		setproductCount(prev => prev + 1);
 	};
 
 	return (
 		<div>
-			{data.map((data: any) => (
-				<div css={detailPageWrapCss} key={data.productVersionGroupSeq}>
-					<div>
-						<img
-							src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${data.productSeq}/image/1`}
-							alt={data.name}
-						/>
-					</div>
+			<div css={detailPageWrapCss} key={data.productVersionGroupSeq}>
+				<div>
+					<img
+						src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${data.productSeq}/image/1`}
+						alt={data.name}
+					/>
+				</div>
+				<div>
 					<div>
 						<div>
-							<div>
-								<ProductLabel label={data.iconClsf} />
-							</div>
-							<div css={brandNameCss}>{data.brandName}</div>
-							<div css={productNameCss}>{data.name}</div>
-							<div css={normalPriceWrapCss}>
-								<span>비회원가</span>
-								<span css={normalPriceCss}>{data.normalPrice.toLocaleString()}원</span>
-							</div>
-							<div css={memberPriceWrapCss}>
-								<p>회원가</p>
-								<span css={discountRateCss}>{data.memberDcRate}%</span>
-								<span>
-									<span css={memberPriceCss}>{data.memberPrice.toLocaleString()}</span>원
-								</span>
-							</div>
+							<ProductLabel label={data.iconClsf} />
 						</div>
-						<div css={infoCss}>
-							<div>
-								<span css={[infoSubTxtCss, benefitCss]}>적립혜택</span> <span>회원가입 시 0원 적립!</span>
-							</div>
-							<div>
-								<span css={infoSubTxtCss}>배송비</span> <span>3,500원 (30,000원이상 무료배송)</span>
-							</div>
+						<div css={brandNameCss}>{data.brandName}</div>
+						<div css={productNameCss}>{data.name}</div>
+						<div css={normalPriceWrapCss}>
+							<span>비회원가</span>
+							<span css={normalPriceCss}>{data.normalPrice.toLocaleString()}원</span>
 						</div>
-						<div css={productCountWrapCss}>
-							<div css={plusMinusBtnWrapCss}>
-								<span onClick={handleClickMinusProductCount} css={plusMinusBtnCss}>
-									<CiCircleMinus size={26} />
-								</span>
-								<span css={productCountCss}>{cartCount}</span>
-								<span onClick={handleClickPlusProductCount} css={plusMinusBtnCss}>
-									<CiCirclePlus size={26} />
-								</span>
-							</div>
-							<div>
-								<span css={finalPriceCss}>{(data.normalPrice * cartCount).toLocaleString()}</span>
-								<span>원</span>
-							</div>
+						<div css={memberPriceWrapCss}>
+							<p>회원가</p>
+							<span css={discountRateCss}>{data.memberDcRate}%</span>
+							<span>
+								<span css={memberPriceCss}>{data.memberPrice.toLocaleString()}</span>원
+							</span>
 						</div>
-						<div css={buttonWrapCss}>
-							<Button size="large">바로구매</Button>
-							<div css={bottomBtnCss}>
-								<Button onClick={handleClickAddCart} size="medium" kind="secondary">
-									장바구니
-								</Button>
-								<GiftBtn size="large" />
-							</div>
+					</div>
+					<div css={infoCss}>
+						<div>
+							<span css={[infoSubTxtCss, benefitCss]}>적립혜택</span> <span>회원가입 시 0원 적립!</span>
+						</div>
+						<div>
+							<span css={infoSubTxtCss}>배송비</span> <span>3,500원 (30,000원이상 무료배송)</span>
+						</div>
+					</div>
+					<div css={productCountWrapCss}>
+						<ProductCount
+							productCount={productCount}
+							onClickLeft={handleClickMinusProductCount}
+							onClickRight={handleClickPlusProductCount}
+						/>
+						<div>
+							<span css={finalPriceCss}>{(data.normalPrice * productCount).toLocaleString()}</span>
+							<span>원</span>
+						</div>
+					</div>
+					<div css={buttonWrapCss}>
+						<Button size="large">바로구매</Button>
+						<div css={bottomBtnCss}>
+							<Button onClick={handleClickAddCart} size="medium" kind="secondary">
+								장바구니
+							</Button>
+							<GiftBtn size="large" />
 						</div>
 					</div>
 				</div>
-			))}
+			</div>
 		</div>
 	);
 }
