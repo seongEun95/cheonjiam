@@ -42,7 +42,7 @@ export default function RedGinsengPage() {
 			</div>
 			<div css={ProductCardWrapCss}>
 				{data.map(data => {
-					return <ProductCardHorizontal key={data.productVersionGroupSeq} ProductData={data} />;
+					return <ProductCardHorizontal key={data.productVersionGroupSeq} productData={data} />;
 				})}
 			</div>
 		</div>

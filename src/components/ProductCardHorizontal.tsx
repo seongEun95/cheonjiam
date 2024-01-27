@@ -1,7 +1,6 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-
 import { useState } from 'react';
 import ProductLabel from './horizontalCardUi/ProductLabel';
 import ProductImg from './horizontalCardUi/ProductImg';
@@ -10,7 +9,7 @@ import DiscountRate from './horizontalCardUi/DiscountRate';
 import { useNavigate } from 'react-router-dom';
 import { ProductHorizontal } from '../types/ProductHorizontal.type';
 
-export default function ProductCardHorizontal({ ProductData }: { ProductData: ProductHorizontal }) {
+export default function ProductCardHorizontal({ productData }: { productData: ProductHorizontal }) {
 	const navigate = useNavigate();
 	const [isHover, setIsHover] = useState(false);
 
@@ -31,34 +30,30 @@ export default function ProductCardHorizontal({ ProductData }: { ProductData: Pr
 			css={productWrapCss}
 			onMouseEnter={handleMouseEnter}
 			onMouseLeave={handleMouseLeave}
-			onClick={() => handleClickNavigate(ProductData.productVersionGroupSeq)}
+			onClick={() => handleClickNavigate(productData.productVersionGroupSeq)}
 		>
-			<ProductImg
-				src={`https://www.cheonjiyang.co.kr/api/attach/view/product/${ProductData.productSeq}/image/1`}
-				alt={ProductData.name}
-				isHover={isHover}
-			/>
+			<ProductImg productData={productData} isHover={isHover} />
 
 			<div css={txtWrapCss}>
 				<div>
-					<ProductLabel label={ProductData.iconClsf} />
-					<div css={brandNameCss}>{ProductData.brandName}</div>
-					<div css={titleCss(isHover)}>{ProductData.name}</div>
+					<ProductLabel label={productData.iconClsf} />
+					<div css={brandNameCss}>{productData.brandName}</div>
+					<div css={titleCss(isHover)}>{productData.name}</div>
 				</div>
 
 				<div>
 					<div css={starRateCss}>
-						<ProductStarRate reviewStarRating={ProductData.reviewAvgRating} />
-						<span css={reveiwCountCss}>{`(${ProductData.reviewCount})`}</span>
+						<ProductStarRate reviewStarRating={productData.reviewAvgRating} />
+						<span css={reveiwCountCss}>{`(${productData.reviewCount})`}</span>
 					</div>
 					<div css={nonMemberPriceWrapCss}>
-						비회원가 <span css={nonMemberPriceCss}>{`${ProductData.normalPrice.toLocaleString()}원`}</span>
+						비회원가 <span css={nonMemberPriceCss}>{`${productData.normalPrice.toLocaleString()}원`}</span>
 					</div>
 
 					<div css={memberPriceWrapCss}>
-						<DiscountRate discountRate={ProductData.memberDcRate} />
+						<DiscountRate discountRate={productData.memberDcRate} />
 						<span css={memberPriceTxtCss}>
-							회원할인가 <strong css={memberPriceCss}>{ProductData.memberPrice.toLocaleString()}</strong>
+							회원할인가 <strong css={memberPriceCss}>{productData.memberPrice.toLocaleString()}</strong>
 							<span css={wonCss}>원</span>
 						</span>
 					</div>

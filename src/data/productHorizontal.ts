@@ -12,6 +12,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewCount: 499,
 		iconClsf: '베스트',
 		reviewAvgRating: 4,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3329,
@@ -24,6 +25,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		productSeq: 13493,
 		reviewAvgRating: 3,
 		memberDcRate: 61,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3454,
@@ -36,6 +38,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewCount: 499,
 		iconClsf: '베스트',
 		reviewAvgRating: 4,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3502,
@@ -48,6 +51,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		productSeq: 13493,
 		reviewAvgRating: 3,
 		memberDcRate: 61,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3303,
@@ -60,6 +64,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewCount: 499,
 		iconClsf: '베스트',
 		reviewAvgRating: 4,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3210,
@@ -72,6 +77,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		productSeq: 13493,
 		reviewAvgRating: 3,
 		memberDcRate: 61,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 7731,
@@ -84,6 +90,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewCount: 499,
 		iconClsf: '베스트',
 		reviewAvgRating: 4,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3534,
@@ -96,6 +103,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		productSeq: 13493,
 		reviewAvgRating: 3,
 		memberDcRate: 61,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3533,
@@ -108,6 +116,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewCount: 499,
 		iconClsf: '베스트',
 		reviewAvgRating: 4,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3329,
@@ -120,6 +129,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		productSeq: 13493,
 		reviewAvgRating: 3,
 		memberDcRate: 61,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3311,
@@ -132,6 +142,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewCount: 499,
 		iconClsf: '베스트',
 		reviewAvgRating: 4,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3329,
@@ -144,6 +155,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		productSeq: 13493,
 		reviewAvgRating: 3,
 		memberDcRate: 61,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3311,
@@ -156,6 +168,7 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		reviewCount: 499,
 		iconClsf: '베스트',
 		reviewAvgRating: 4,
+		soldOutYn: 'N',
 	},
 	{
 		productVersionGroupSeq: 3329,
@@ -168,5 +181,6 @@ export const PRODUCT_HORIZONTAL_DATA: ProductHorizontal[] = [
 		productSeq: 13493,
 		reviewAvgRating: 3,
 		memberDcRate: 61,
+		soldOutYn: 'N',
 	},
 ];

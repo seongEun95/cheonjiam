@@ -2,15 +2,16 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import NavBarMenu from './NavBarMenu';
+import { Link } from 'react-router-dom';
 
 export default function SideNavBar() {
 	return (
 		<header css={headerCss}>
 			<div css={logoWrapCss}>
 				<h1>
-					<a href="/">
+					<Link to={'/'}>
 						<img src="/img/logo.png" alt="천지얌 로고" />
-					</a>
+					</Link>
 				</h1>
 			</div>
 			<NavBarMenu />
@@ -25,6 +26,7 @@ const headerCss = css`
 	width: 180px;
 	padding: 40px 25px 0;
 	box-sizing: border-box;
+	z-index: 11;
 `;
 
 const logoWrapCss = css`

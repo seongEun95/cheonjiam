@@ -9,6 +9,8 @@ import { useState } from 'react';
 import { FaRegHeart } from 'react-icons/fa';
 import { FaHeart } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Cart, addItems } from '../redux/slice/cartSlice';
 
 interface ProductCardVerticalProps {
 	data: Product;
@@ -16,6 +18,8 @@ interface ProductCardVerticalProps {
 }
 
 export default function ProductCardVertical({ data, onClick }: ProductCardVerticalProps) {
+	const dispatch = useDispatch();
+
 	const [isHover, setIsHover] = useState(false);
 	const [isLike, setIsLike] = useState(false);
 
@@ -31,9 +35,15 @@ export default function ProductCardVertical({ data, onClick }: ProductCardVertic
 		navigate('/auth/signin');
 	};
 
-	const handleClickCartNavigation = (e: React.MouseEvent<HTMLDivElement>) => {
+	const handleClickAddCart = (e: React.MouseEvent<HTMLDivElement>) => {
 		e.stopPropagation();
-		navigate('/cart');
+		const cartData: Cart = {
+			id: data.productVersionGroupSeq,
+			isChecked: false,
+			product: data,
+			productCount: 1,
+		};
+		dispatch(addItems(cartData));
 	};
 
 	return (
@@ -74,7 +84,7 @@ export default function ProductCardVertical({ data, onClick }: ProductCardVertic
 				<div onClick={handleClickLoginNavigation}>
 					<img src="/img/icon-payment.png" alt="paymentIcon" />
 				</div>
-				<div onClick={handleClickCartNavigation}>
+				<div onClick={handleClickAddCart}>
 					<img src="/img/icon-cart.png" alt="cartIcon" />
 				</div>
 				<div css={heartIconCss} onClick={handleClickLike}>

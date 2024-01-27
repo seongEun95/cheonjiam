@@ -7,6 +7,7 @@ export type ProductHorizontal = {
 	reviewAvgRating: number;
 	reviewCount: number;
 	memberDcRate: number;
+	soldOutYn: string;
 	iconClsf: string;
 	brandName: string;
 };
