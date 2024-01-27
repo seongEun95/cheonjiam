@@ -16,13 +16,7 @@ export default function CartPage() {
 			<h2 css={titleCss}>장바구니</h2>
 			<div css={cartWrapCss}>
 				<div css={itemWrapCss}>
-					{cartItems.length === 0 ? (
-						<EmptyCart />
-					) : (
-						cartItems.map(({ id, isChecked, product, productCount }: Cart) => (
-							<CartItem key={id} id={id} isChecked={isChecked} product={product} productCount={productCount} />
-						))
-					)}
+					{cartItems.length === 0 ? <EmptyCart /> : cartItems.map((item: Cart) => <CartItem key={item.id} {...item} />)}
 				</div>
 				<PriceInfo cartItems={cartItems} />
 			</div>
