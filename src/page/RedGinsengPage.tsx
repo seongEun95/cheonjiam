@@ -4,14 +4,15 @@ import { jsx, css } from '@emotion/react';
 import { ProductHorizontalList } from '../types/ProductHorizontal.type';
 import { PRODUCT_HORIZONTAL_DATA } from '../data/productHorizontal';
 import ProductCardHorizontal from '../components/ProductCardHorizontal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RangeSlider, { SelectedRange } from '../components/ui/RangeSlider';
+import axios from 'axios';
 
 const min = 1000; // 더블슬라이드 최소값
 const max = 280000; // 더블슬라이드 최대값, 최소값과 최대값을 함수컴포넌트 밖으로 빼는 이유 : 컴포넌트 안에 변수가 있으면 컴포넌트가 계속 렌더링되면서 변수도 같이 메모리에 영향을 주므로 밖에서 선언한다.
 
 export default function RedGinsengPage() {
-	const [data] = useState<ProductHorizontalList>(PRODUCT_HORIZONTAL_DATA.filter((_, index) => index < 8));
+	// const [data] = useState<ProductHorizontalList>(PRODUCT_HORIZONTAL_DATA.filter((_, index) => index < 8));
 
 	const [range, setRange] = useState([min, max]); // 슬라이드의 최소값, 최대값을 배열 상태값으로 설정
 	const handleChangeRange = (range: SelectedRange) => {
@@ -19,6 +20,22 @@ export default function RedGinsengPage() {
 
 		// Range값을 벡엔드 서버에 api 요청함.
 	};
+
+	const token = localStorage.getItem('ac');
+	const [newData, setNewData] = useState<ProductHorizontalList>([]);
+	const [load, setLoad] = useState('loading');
+
+	useEffect(() => {
+		axios
+			.get('http://localhost:8000/hongsam', {
+				headers: { Authorization: `Bearer ${token}` },
+			})
+			.then(res => {
+				setNewData(res.data);
+				setLoad('');
+			})
+			.catch(err => console.log(err));
+	}, []);
 
 	return (
 		<div css={productPageWrapCss}>
@@ -41,7 +58,8 @@ export default function RedGinsengPage() {
 				</div>
 			</div>
 			<div css={ProductCardWrapCss}>
-				{data.map(data => {
+				{load && <div css={loadingCss}>{load}</div>}
+				{newData.map(data => {
 					return <ProductCardHorizontal key={data.productVersionGroupSeq} productData={data} />;
 				})}
 			</div>
@@ -78,6 +96,22 @@ const ProductCardWrapCss = css`
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 535px));
 	gap: 40px;
+`;
+
+const loadingCss = css`
+	width: 1075px;
+	line-height: 80px;
+	text-align: center;
+	animation: opacity 0.4s infinite alternate;
+
+	@keyframes opacity {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
 `;
 
 const titleCss = css`
