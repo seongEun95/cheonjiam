@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Product } from '../../types/Product.type';
 
 export type Cart = {
@@ -22,7 +22,7 @@ const cartSlice = createSlice({
 	name: 'cart',
 	initialState,
 	reducers: {
-		addItems: (state, action) => {
+		addItems: (state, action: PayloadAction<Cart>) => {
 			const newItem = action.payload;
 			const isItemExist = state.items.find(item => item.id === newItem.id);
 			if (!isItemExist) {
@@ -37,12 +37,12 @@ const cartSlice = createSlice({
 			}
 		},
 
-		removeItems: (state, action) => {
+		removeItems: (state, action: PayloadAction<number>) => {
 			const id = action.payload;
 			state.items = state.items.filter(item => item.id !== id);
 		},
 
-		plusProductCount: (state, action) => {
+		plusProductCount: (state, action: PayloadAction<number>) => {
 			const id = action.payload;
 			const findItem = state.items.find(item => item.id === id);
 
@@ -51,7 +51,7 @@ const cartSlice = createSlice({
 			}
 		},
 
-		minusProductCount: (state, action) => {
+		minusProductCount: (state, action: PayloadAction<number>) => {
 			const id = action.payload;
 			const findItem = state.items.find(item => item.id === id);
 
@@ -60,7 +60,7 @@ const cartSlice = createSlice({
 			}
 		},
 
-		isCheckedChange: (state, action) => {
+		isCheckedChange: (state, action: PayloadAction<number>) => {
 			const id = action.payload;
 			const findItem = state.items.find(item => item.id === id);
 
