@@ -9,8 +9,16 @@ import CartPage from './page/CartPage';
 import DetailPage from './page/DetailPage';
 import CommonPage from './page/CommonPage';
 import TestPage from './page/TestPage';
+import { Modal } from './components/ui/Modal';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { RootState } from './redux/store';
+import { showModal } from './redux/slice/modalSlice';
 
 export default function Router() {
+	const dispatch = useDispatch();
+	const { isShow, title, content, onConfirm } = useSelector((state: RootState) => state.modal.modal);
+
 	return (
 		<BrowserRouter>
 			<Routes>
@@ -28,6 +36,10 @@ export default function Router() {
 
 				<Route path="/test" element={<TestPage />}></Route>
 			</Routes>
+
+			<Modal isShow={isShow} modalTitle={title} onConfirm={onConfirm} onClose={() => dispatch(showModal(false))}>
+				{content}
+			</Modal>
 		</BrowserRouter>
 	);
 }
