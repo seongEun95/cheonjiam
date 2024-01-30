@@ -7,6 +7,7 @@ import ProductCardHorizontal from '../components/ProductCardHorizontal';
 import { useEffect, useState } from 'react';
 import RangeSlider, { SelectedRange } from '../components/ui/RangeSlider';
 import axios from 'axios';
+import { refreshTokens } from '../api/refresh.api';
 
 const min = 1000; // 더블슬라이드 최소값
 const max = 280000; // 더블슬라이드 최대값, 최소값과 최대값을 함수컴포넌트 밖으로 빼는 이유 : 컴포넌트 안에 변수가 있으면 컴포넌트가 계속 렌더링되면서 변수도 같이 메모리에 영향을 주므로 밖에서 선언한다.
@@ -21,20 +22,47 @@ export default function RedGinsengPage() {
 		// Range값을 벡엔드 서버에 api 요청함.
 	};
 
-	const token = localStorage.getItem('ac');
 	const [newData, setNewData] = useState<ProductHorizontalList>([]);
-	const [load, setLoad] = useState('loading');
+	const [load, setLoad] = useState(false);
+	const [error, setError] = useState(false);
 
 	useEffect(() => {
-		axios
-			.get('http://localhost:8000/hongsam', {
-				headers: { Authorization: `Bearer ${token}` },
-			})
-			.then(res => {
-				setNewData(res.data);
-				setLoad('');
-			})
-			.catch(err => console.log(err));
+		setError(false);
+		setLoad(true);
+		let tokenErrorCount = 0;
+
+		const getHongsamList = async () => {
+			const at = localStorage.getItem('at');
+
+			return await axios
+				.get('http://localhost:8000/hongsam', {
+					headers: { Authorization: `Bearer ${at}` },
+				})
+				.then(res => {
+					setNewData(res.data);
+					setLoad(false);
+				})
+				.catch(err => {
+					console.log(err);
+
+					if (err.response.data.message === 'Invalid access token') {
+						if (tokenErrorCount >= 3) {
+							setError(true);
+							console.error('invalid token error occured more than 3 times.');
+						} else {
+							tokenErrorCount === 0
+								? refreshTokens(getHongsamList)
+								: setTimeout(() => refreshTokens(getHongsamList), 1000);
+						}
+
+						return tokenErrorCount++;
+					}
+
+					setError(true);
+				});
+		};
+
+		getHongsamList();
 	}, []);
 
 	return (
@@ -58,7 +86,7 @@ export default function RedGinsengPage() {
 				</div>
 			</div>
 			<div css={ProductCardWrapCss}>
-				{load && <div css={loadingCss}>{load}</div>}
+				{error ? <div>Error</div> : load && <div css={loadingCss}>loading</div>}
 				{newData.map(data => {
 					return <ProductCardHorizontal key={data.productVersionGroupSeq} productData={data} />;
 				})}
