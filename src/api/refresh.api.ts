@@ -8,7 +8,7 @@ export const refreshTokens = (cb: Function) => {
 			headers: { Authorization: `Bearer ${rt}` },
 		})
 		.then(res => {
-			// localStorage.setItem('at', res.data.at);
+			localStorage.setItem('at', res.data.at);
 			localStorage.setItem('rt', res.data.rt);
 
 			cb();
