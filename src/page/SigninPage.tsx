@@ -9,7 +9,7 @@ import { SHA256 } from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 import { rEmail, rPassword } from '../util/regexp';
 import { useDispatch } from 'react-redux';
-import { confirmModal, contentChangeModal, showModal, titleChangeModal } from '../redux/slice/modalSlice';
+import { allChangeModal, showModal } from '../redux/slice/modalSlice';
 
 export default function SigninPage() {
 	const navigate = useNavigate();
@@ -21,22 +21,14 @@ export default function SigninPage() {
 
 	// 입력 시 메시지 초기화
 	useEffect(() => {
-		if (signinInput.email.value.length > 0) {
+		if (signinInput.email.value.length > 0 || signinInput.password.value.length > 0) {
 			setSigninInput(prev => ({
 				...prev,
 				email: { ...prev.email, message: '' },
-			}));
-		}
-	}, [signinInput.email.value]);
-
-	useEffect(() => {
-		if (signinInput.password.value.length > 0) {
-			setSigninInput(prev => ({
-				...prev,
 				password: { ...prev.password, message: '' },
 			}));
 		}
-	}, [signinInput.password.value]);
+	}, [signinInput.email.value, signinInput.password.value]);
 
 	// 글 입력 시 상태 변경
 	const handleChangeSigninInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,39 +65,42 @@ export default function SigninPage() {
 				localStorage.setItem('rt', res.data.rt);
 
 				dispatch(
-					confirmModal(() => {
-						navigate('/');
-						dispatch(showModal(false));
+					allChangeModal({
+						isShow: true,
+						title: '로그인 완료',
+						content: '메인페이지로 이동합니다.',
+						confirm: () => {
+							navigate('/');
+							dispatch(showModal(false));
+						},
 					}),
 				);
-
-				dispatch(titleChangeModal('로그인 완료'));
-				dispatch(contentChangeModal('메인페이지로 이동합니다.'));
-				dispatch(showModal(true));
 			})
 			.catch(err => {
 				if (err.response.data.message === 'Internal server error') {
 					dispatch(
-						confirmModal(() => {
-							dispatch(showModal(false));
+						allChangeModal({
+							isShow: true,
+							title: '서버에러 발생',
+							content: '다시 로그인 해주세요.',
+							confirm: () => {
+								dispatch(showModal(false));
+							},
 						}),
 					);
-
-					dispatch(titleChangeModal('서버에러 발생'));
-					dispatch(contentChangeModal('다시 로그인 해주세요.'));
-					dispatch(showModal(true));
 				}
 
 				if (err.response.data.message === 'Invalid credentials') {
 					dispatch(
-						confirmModal(() => {
-							dispatch(showModal(false));
+						allChangeModal({
+							isShow: true,
+							title: '로그인 오류',
+							content: '아이디 또는 비밀번호가 틀렸습니다.',
+							confirm: () => {
+								dispatch(showModal(false));
+							},
 						}),
 					);
-
-					dispatch(titleChangeModal('로그인 오류'));
-					dispatch(contentChangeModal('아이디 또는 비밀번호가 틀렸습니다.'));
-					dispatch(showModal(true));
 				}
 
 				console.log(err);

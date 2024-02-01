@@ -9,7 +9,7 @@ import { rEmail, rPassword } from '../util/regexp';
 import { useNavigate } from 'react-router-dom';
 import { SHA256 } from 'crypto-js';
 import { useDispatch } from 'react-redux';
-import { confirmModal, contentChangeModal, showModal, titleChangeModal } from '../redux/slice/modalSlice';
+import { allChangeModal, showModal } from '../redux/slice/modalSlice';
 
 export default function SignupPage() {
 	const navigate = useNavigate();
@@ -20,22 +20,14 @@ export default function SignupPage() {
 	});
 
 	useEffect(() => {
-		if (signupInput.email.value.length > 0) {
+		if (signupInput.email.value.length > 0 || signupInput.password.value.length > 0) {
 			setSignupInput(prev => ({
 				...prev,
 				email: { ...prev.email, message: '' },
-			}));
-		}
-	}, [signupInput.email.value]);
-
-	useEffect(() => {
-		if (signupInput.password.value.length > 0) {
-			setSignupInput(prev => ({
-				...prev,
 				password: { ...prev.password, message: '' },
 			}));
 		}
-	}, [signupInput.password.value]);
+	}, [signupInput.email.value, signupInput.password.value]);
 
 	const handleChangeSignupInput = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
@@ -71,15 +63,16 @@ export default function SignupPage() {
 			.then(res => {
 				if (res.data === 'ok') {
 					dispatch(
-						confirmModal(() => {
-							navigate('/auth/signin');
-							dispatch(showModal(false));
+						allChangeModal({
+							isShow: true,
+							title: '회원가입 완료',
+							content: '로그인 페이지로 이동합니다.',
+							confirm: () => {
+								navigate('/auth/signin');
+								dispatch(showModal(false));
+							},
 						}),
 					);
-
-					dispatch(titleChangeModal('회원가입 완료'));
-					dispatch(contentChangeModal('로그인 페이지로 이동합니다.'));
-					dispatch(showModal(true));
 				}
 			})
 			.catch(err => {
