@@ -4,33 +4,33 @@ import { jsx, css } from '@emotion/react';
 import ButtonChallenge from './Button';
 import React from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { useSelector } from 'react-redux';
+import { showModal } from '../../redux/slice/modalSlice';
 
-interface modalProps {
-	isShow?: boolean;
-	modalTitle?: string;
-	children?: React.ReactNode;
-	onConfirm?: () => void;
-	onClose?: () => void;
-}
+export function Modal() {
+	const dispatch = useDispatch();
+	const { isShow, title, content, onConfirm } = useSelector((state: RootState) => state.modal.modal);
+	const handleClickPopupClose = () => dispatch(showModal(false));
 
-export function Modal({ isShow, modalTitle, children, onConfirm, onClose }: modalProps) {
 	return (
 		<React.Fragment>
 			{isShow && (
-				<div css={modalWrap}>
-					<h1 css={title}>{modalTitle}</h1>
-					<button onClick={onClose} css={closeBtn}>
+				<div css={modalWrapCss}>
+					<h1 css={titleCss}>{title}</h1>
+					<button onClick={handleClickPopupClose} css={closeBtn}>
 						<AiOutlineClose />
 					</button>
-					<div css={content}>{children}</div>
-					<ul css={btnWrap}>
-						<li css={btnLi}>
+					<div css={contentCss}>{content}</div>
+					<ul css={btnWrapCss}>
+						<li css={btnLiCss}>
 							<ButtonChallenge onClick={onConfirm} kind="primary">
 								확인
 							</ButtonChallenge>
 						</li>
-						<li css={btnLi}>
-							<ButtonChallenge onClick={onClose} kind="secondary">
+						<li css={btnLiCss}>
+							<ButtonChallenge onClick={handleClickPopupClose} kind="secondary">
 								취소
 							</ButtonChallenge>
 						</li>
@@ -41,7 +41,7 @@ export function Modal({ isShow, modalTitle, children, onConfirm, onClose }: moda
 	);
 }
 
-const modalWrap = css`
+const modalWrapCss = css`
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -55,7 +55,7 @@ const modalWrap = css`
 	border-radius: 10px;
 `;
 
-const title = css`
+const titleCss = css`
 	font-size: 24px;
 	margin-bottom: 14px;
 	padding-bottom: 10px;
@@ -71,16 +71,16 @@ const closeBtn = css`
 	cursor: pointer;
 `;
 
-const content = css`
+const contentCss = css`
 	font-size: 16px;
 	min-height: 150px;
 `;
 
-const btnWrap = css`
+const btnWrapCss = css`
 	display: flex;
 	justify-content: space-between;
 `;
 
-const btnLi = css`
+const btnLiCss = css`
 	flex: 1;
 `;
