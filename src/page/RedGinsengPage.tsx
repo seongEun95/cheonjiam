@@ -18,8 +18,25 @@ export default function RedGinsengPage() {
 	const [range, setRange] = useState([min, max]); // 슬라이드의 최소값, 최대값을 배열 상태값으로 설정
 	const handleChangeRange = (range: SelectedRange) => {
 		setRange([range[0].price, range[1].price]); // 최소밗, 최대값 가격을 상태변경
+		console.log(range);
+
+		setError(false);
+		setLoad(true);
 
 		// Range값을 벡엔드 서버에 api 요청함.
+		const at = localStorage.getItem('at');
+		axios
+			.get(`http://localhost:8000/hongsam?min=${range[0].price}&max=${range[1].price}`, {
+				headers: { Authorization: `Bearer ${at}` },
+			})
+			.then(res => {
+				setNewData(res.data);
+				setLoad(false);
+			})
+			.catch(err => {
+				console.log(err);
+				setError(true);
+			});
 	};
 
 	const [newData, setNewData] = useState<ProductHorizontalList>([]);
@@ -34,8 +51,8 @@ export default function RedGinsengPage() {
 		const getHongsamList = async () => {
 			const at = localStorage.getItem('at');
 
-			return await axios
-				.get('http://localhost:8000/hongsam', {
+			return await axios // @ts-ignore
+				.get(`http://localhost:8000/hongsam?min=${min}&max=${max}`, {
 					headers: { Authorization: `Bearer ${at}` },
 				})
 				.then(res => {
@@ -127,6 +144,12 @@ const ProductCardWrapCss = css`
 `;
 
 const loadingCss = css`
+	position: absolute;
+	top: 50%;
+	padding: 10px;
+	color: #fff;
+	background-color: #d53147;
+	z-index: 10;
 	width: 1075px;
 	line-height: 80px;
 	text-align: center;
