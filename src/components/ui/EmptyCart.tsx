@@ -3,8 +3,11 @@
 import { jsx, css } from '@emotion/react';
 import { BsCartX } from 'react-icons/bs';
 import Button from './Button';
+import { useNavigate } from 'react-router-dom';
 
 export default function EmptyCart() {
+	const navigate = useNavigate();
+
 	return (
 		<div css={emptyItemWrapCss}>
 			<div>
@@ -16,7 +19,13 @@ export default function EmptyCart() {
 					<br /> 다양한 상품을 확인하고 장바구니에 담아보세요!
 				</div>
 				<div>
-					<Button size="medium" kind="secondary">
+					<Button
+						onClick={() => {
+							navigate('/auth/signin');
+						}}
+						size="medium"
+						kind="secondary"
+					>
 						로그인 하기
 					</Button>
 				</div>
