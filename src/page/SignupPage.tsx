@@ -20,10 +20,16 @@ export default function SignupPage() {
 	});
 
 	useEffect(() => {
-		if (signupInput.email.value.length > 0 || signupInput.password.value.length > 0) {
+		if (signupInput.email.value.length === 0) {
 			setSignupInput(prev => ({
 				...prev,
 				email: { ...prev.email, message: '' },
+			}));
+		}
+
+		if (signupInput.password.value.length === 0) {
+			setSignupInput(prev => ({
+				...prev,
 				password: { ...prev.password, message: '' },
 			}));
 		}

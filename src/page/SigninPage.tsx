@@ -21,10 +21,16 @@ export default function SigninPage() {
 
 	// 입력 시 메시지 초기화
 	useEffect(() => {
-		if (signinInput.email.value.length > 0 || signinInput.password.value.length > 0) {
+		if (signinInput.email.value.length === 0) {
 			setSigninInput(prev => ({
 				...prev,
 				email: { ...prev.email, message: '' },
+			}));
+		}
+
+		if (signinInput.password.value.length === 0) {
+			setSigninInput(prev => ({
+				...prev,
 				password: { ...prev.password, message: '' },
 			}));
 		}
