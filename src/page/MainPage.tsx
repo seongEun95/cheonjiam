@@ -1,23 +1,30 @@
 /** @jsxRuntime classic */
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../redux/store';
-import { plusCount } from '../redux/slice/countSlice';
 import ProductCardVertical from '../components/ProductCardVertical';
 import { useState } from 'react';
-import { PRODUCT_DATA } from '../data/productSample';
 import { useNavigate } from 'react-router-dom';
 import CarouselSlide from '../components/Carousel';
-import { ProductList } from '../types/Product.type';
 import { IoIosArrowBack } from 'react-icons/io';
 import { IoIosArrowForward } from 'react-icons/io';
+import axios from 'axios';
+import { ProductHorizontalList } from '../types/ProductHorizontal.type';
 
 export default function MainPage() {
-	const dispatch = useDispatch();
-	const count = useSelector((state: RootState) => state.count);
+	const [newData, setNewData] = useState<ProductHorizontalList>([]);
+	const slideData = newData.filter((_, index) => index < 10);
 
-	const [data] = useState<ProductList>(PRODUCT_DATA.filter((_, index) => index < 10)); // 인덱스 0 ~ 7까지만 생성, 총 8개 제품만 보여주기
+	const at = localStorage.getItem('at');
+	axios
+		.get(`http://localhost:8000/hongsam?min=1000&max=280000`, {
+			headers: { Authorization: `Bearer ${at}` },
+		})
+		.then(res => {
+			setNewData(res.data);
+		})
+		.catch(err => {
+			console.error(err);
+		});
 
 	const navigate = useNavigate();
 	const [slideNum, setSlideNum] = useState<number>(0);
@@ -45,7 +52,7 @@ export default function MainPage() {
 				<h2 css={titleCss}>Best Seller</h2>
 				<div css={productCardVerticalOuterCss}>
 					<div css={productCardVerticalInnerCss(slideNum)}>
-						{data.map(data => {
+						{slideData.map(data => {
 							return <ProductCardVertical data={data} key={data.productVersionGroupSeq} onClick={handleClickCard} />;
 						})}
 					</div>
@@ -56,23 +63,12 @@ export default function MainPage() {
 							<IoIosArrowBack size={20} />
 						</button>
 					)}
-					{slideNum !== -data.length + 3 && (
+					{slideNum !== -newData.length + 3 && (
 						<button css={[btnCommonCss, nextBtnCss]} onClick={handleClickSlideNext}>
 							<IoIosArrowForward size={20} />
 						</button>
 					)}
 				</div>
-			</div>
-			<div css={reduxTestCss}>
-				<span>{count.count}</span>
-				<button
-					css={reduxPlusBtnCss}
-					onClick={() => {
-						dispatch(plusCount(count.count));
-					}}
-				>
-					+
-				</button>
 			</div>
 		</div>
 	);
@@ -123,16 +119,4 @@ const prevBtnCss = css`
 
 const nextBtnCss = css`
 	right: 3%;
-`;
-
-const reduxTestCss = css`
-	margin: 40px 0;
-	text-align: center;
-`;
-
-const reduxPlusBtnCss = css`
-	margin: 10px;
-	padding: 10px;
-	font-size: 20px;
-	border: 1px solid #ccc;
 `;
