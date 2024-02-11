@@ -9,6 +9,7 @@ import CartPage from './page/CartPage';
 import DetailPage from './page/DetailPage';
 import CommonPage from './page/CommonPage';
 import TestPage from './page/TestPage';
+import { Modal } from './components/ui/Modal';
 
 export default function Router() {
 	return (
@@ -28,6 +29,8 @@ export default function Router() {
 
 				<Route path="/test" element={<TestPage />}></Route>
 			</Routes>
+
+			<Modal />
 		</BrowserRouter>
 	);
 }

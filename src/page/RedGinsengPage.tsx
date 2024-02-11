@@ -2,23 +2,78 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import { ProductHorizontalList } from '../types/ProductHorizontal.type';
-import { PRODUCT_HORIZONTAL_DATA } from '../data/productHorizontal';
 import ProductCardHorizontal from '../components/ProductCardHorizontal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RangeSlider, { SelectedRange } from '../components/ui/RangeSlider';
-
-const min = 1000; // 더블슬라이드 최소값
-const max = 280000; // 더블슬라이드 최대값, 최소값과 최대값을 함수컴포넌트 밖으로 빼는 이유 : 컴포넌트 안에 변수가 있으면 컴포넌트가 계속 렌더링되면서 변수도 같이 메모리에 영향을 주므로 밖에서 선언한다.
+import axios from 'axios';
+import { refreshTokens } from '../api/refresh.api';
 
 export default function RedGinsengPage() {
-	const [data] = useState<ProductHorizontalList>(PRODUCT_HORIZONTAL_DATA.filter((_, index) => index < 8));
+	const [range, setRange] = useState([1000, 280000]); // 슬라이드의 최소값, 최대값을 배열 상태값으로 설정
+	const [newData, setNewData] = useState<ProductHorizontalList>([]);
+	const [load, setLoad] = useState(false);
+	const [error, setError] = useState(false);
 
-	const [range, setRange] = useState([min, max]); // 슬라이드의 최소값, 최대값을 배열 상태값으로 설정
 	const handleChangeRange = (range: SelectedRange) => {
 		setRange([range[0].price, range[1].price]); // 최소밗, 최대값 가격을 상태변경
 
+		setError(false);
+		setLoad(true);
+
 		// Range값을 벡엔드 서버에 api 요청함.
+		const at = localStorage.getItem('at');
+		axios
+			.get(`http://localhost:8000/hongsam?min=${range[0].price}&max=${range[1].price}`, {
+				headers: { Authorization: `Bearer ${at}` },
+			})
+			.then(res => {
+				setNewData(res.data);
+				setLoad(false);
+			})
+			.catch(err => {
+				console.error(err);
+				setError(true);
+			});
 	};
+
+	useEffect(() => {
+		setError(false);
+		setLoad(true);
+		let tokenErrorCount = 0;
+
+		const getHongsamList = async () => {
+			const at = localStorage.getItem('at');
+
+			return await axios
+				.get(`http://localhost:8000/hongsam?min=${range[0]}&max=${range[1]}`, {
+					headers: { Authorization: `Bearer ${at}` },
+				})
+				.then(res => {
+					setNewData(res.data);
+					setLoad(false);
+				})
+				.catch(err => {
+					console.log(err);
+
+					if (err.response.data.message === 'Invalid access token') {
+						if (tokenErrorCount >= 3) {
+							setError(true);
+							console.error('invalid token error occured more than 3 times.');
+						} else {
+							tokenErrorCount === 0
+								? refreshTokens(getHongsamList)
+								: setTimeout(() => refreshTokens(getHongsamList), 1000);
+						}
+
+						return tokenErrorCount++;
+					}
+
+					setError(true);
+				});
+		};
+
+		getHongsamList();
+	}, []);
 
 	return (
 		<div css={productPageWrapCss}>
@@ -37,11 +92,12 @@ export default function RedGinsengPage() {
 					</div>
 				</div>
 				<div css={sliderWrapCss}>
-					<RangeSlider label="가격" min={min} max={max} onChangeRange={handleChangeRange} />
+					<RangeSlider label="가격" min={range[0]} max={range[1]} onChangeRange={handleChangeRange} />
 				</div>
 			</div>
 			<div css={ProductCardWrapCss}>
-				{data.map(data => {
+				{error ? <div>Error</div> : load && <div css={loadingCss}>loading</div>}
+				{newData.map(data => {
 					return <ProductCardHorizontal key={data.productVersionGroupSeq} productData={data} />;
 				})}
 			</div>
@@ -78,6 +134,31 @@ const ProductCardWrapCss = css`
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 535px));
 	gap: 40px;
+`;
+
+const loadingCss = css`
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 200px;
+	height: 200px;
+	line-height: 200px;
+	color: #fff;
+	border-radius: 100%;
+	background-color: #d53147;
+	z-index: 10;
+	text-align: center;
+	animation: opacity 0.4s infinite alternate;
+
+	@keyframes opacity {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
 `;
 
 const titleCss = css`
