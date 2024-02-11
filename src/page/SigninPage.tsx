@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { rEmail, rPassword } from '../util/regexp';
 import { useDispatch } from 'react-redux';
 import { allChangeModal, showModal } from '../redux/slice/modalSlice';
+import { setUser } from '../redux/slice/userSlice';
 
 export default function SigninPage() {
 	const navigate = useNavigate();
@@ -69,6 +70,7 @@ export default function SigninPage() {
 			.then(res => {
 				localStorage.setItem('at', res.data.at);
 				localStorage.setItem('rt', res.data.rt);
+				console.log(res.data.user);
 
 				dispatch(
 					allChangeModal({
@@ -78,6 +80,17 @@ export default function SigninPage() {
 						confirm: () => {
 							navigate('/');
 							dispatch(showModal(false));
+						},
+					}),
+				);
+
+				dispatch(
+					setUser({
+						user: {
+							id: res.data.user.id,
+							email: res.data.user.email,
+							createdAt: res.data.user.createdAt,
+							updatedAt: res.data.user.updatedAt,
 						},
 					}),
 				);
