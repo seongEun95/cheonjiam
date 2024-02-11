@@ -10,6 +10,7 @@ import DetailPage from './page/DetailPage';
 import CommonPage from './page/CommonPage';
 import TestPage from './page/TestPage';
 import { Modal } from './components/ui/Modal';
+import ProfilePage from './page/ProfilePage';
 
 export default function Router() {
 	return (
@@ -23,6 +24,7 @@ export default function Router() {
 						<Route path="signin" element={<SigninPage />} />
 						<Route path="signup" element={<SignupPage />} />
 					</Route>
+					<Route path="/profile" element={<ProfilePage />} />
 					<Route path="/inquiry" element={<InquiryPage />} />
 					<Route path="/cart" element={<CartPage />} />
 				</Route>
