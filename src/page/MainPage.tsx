@@ -16,7 +16,7 @@ export default function MainPage() {
 
 	const at = localStorage.getItem('at');
 	axios
-		.get(`http://localhost:8000/hongsam?min=1000&max=280000`, {
+		.get(`http://localhost:8000/hongsam`, {
 			headers: { Authorization: `Bearer ${at}` },
 		})
 		.then(res => {
