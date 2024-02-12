@@ -7,6 +7,7 @@ import Button from '../components/ui/Button';
 import { useDispatch } from 'react-redux';
 import { resetUser } from '../redux/slice/userSlice';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 export default function ProfilePage() {
 	const userInfo = useSelector((state: RootState) => state.user.user);
@@ -14,17 +15,7 @@ export default function ProfilePage() {
 	const navigate = useNavigate();
 
 	const handleClickLogout = () => {
-		dispatch(
-			resetUser({
-				user: {
-					id: 0,
-					email: '',
-					createdAt: new Date(),
-					updatedAt: new Date(),
-				},
-			}),
-		);
-
+		dispatch(resetUser());
 		localStorage.removeItem('at');
 		localStorage.removeItem('rt');
 		navigate('/auth/signin');
@@ -47,11 +38,11 @@ export default function ProfilePage() {
 					</div>
 					<div>
 						<span css={userInfoTitCss}>생성날짜</span>
-						<span>{userInfo.createdAt.toLocaleString()}</span>
+						<span>{moment(userInfo.createdAt).format('YYYY년 MM월 DD일')}</span>
 					</div>
 					<div>
 						<span css={userInfoTitCss}>수정날짜</span>
-						<span>{userInfo.updatedAt.toLocaleString()}</span>
+						<span>{moment(userInfo.updatedAt).format('YYYY년 MM월 DD일')}</span>
 					</div>
 				</div>
 				<div css={btnCss}>
