@@ -7,12 +7,48 @@ import { useEffect, useState } from 'react';
 import RangeSlider, { SelectedRange } from '../components/ui/RangeSlider';
 import axios from 'axios';
 import { refreshTokens } from '../api/refresh.api';
+import Pagination from '../components/ui/Pagination';
 
 export default function RedGinsengPage() {
 	const [range, setRange] = useState([1000, 280000]); // 슬라이드의 최소값, 최대값을 배열 상태값으로 설정
 	const [newData, setNewData] = useState<ProductHorizontalList>([]);
 	const [load, setLoad] = useState(false);
 	const [error, setError] = useState(false);
+	const [page, setPage] = useState(1);
+
+	let tokenErrorCount = 0;
+	const getHongsamList = async (num: number) => {
+		const at = localStorage.getItem('at');
+		setError(false);
+		setLoad(true);
+
+		return await axios
+			.get(`http://localhost:8000/hongsam?page=${num}`, {
+				headers: { Authorization: `Bearer ${at}` },
+			})
+			.then(res => {
+				setNewData(res.data);
+				setLoad(false);
+			})
+			.catch(err => {
+				console.log(err);
+
+				if (err.response.data.message === 'Invalid access token') {
+					if (tokenErrorCount >= 3) {
+						setError(true);
+						console.error('invalid token error occured more than 3 times.');
+					} else {
+						tokenErrorCount === 0
+							? refreshTokens(getHongsamList)
+							: setTimeout(() => refreshTokens(getHongsamList), 1000);
+					}
+
+					return tokenErrorCount++;
+				}
+
+				setError(true);
+			});
+	};
 
 	const handleChangeRange = (range: SelectedRange) => {
 		setRange([range[0].price, range[1].price]); // 최소밗, 최대값 가격을 상태변경
@@ -23,7 +59,7 @@ export default function RedGinsengPage() {
 		// Range값을 벡엔드 서버에 api 요청함.
 		const at = localStorage.getItem('at');
 		axios
-			.get(`http://localhost:8000/hongsam?min=${range[0].price}&max=${range[1].price}`, {
+			.get(`http://localhost:8000/hongsam?min=${range[0].price}&max=${range[1].price}&page=${page}`, {
 				headers: { Authorization: `Bearer ${at}` },
 			})
 			.then(res => {
@@ -37,43 +73,14 @@ export default function RedGinsengPage() {
 	};
 
 	useEffect(() => {
-		setError(false);
-		setLoad(true);
-		let tokenErrorCount = 0;
-
-		const getHongsamList = async () => {
-			const at = localStorage.getItem('at');
-
-			return await axios
-				.get(`http://localhost:8000/hongsam?min=${range[0]}&max=${range[1]}`, {
-					headers: { Authorization: `Bearer ${at}` },
-				})
-				.then(res => {
-					setNewData(res.data);
-					setLoad(false);
-				})
-				.catch(err => {
-					console.log(err);
-
-					if (err.response.data.message === 'Invalid access token') {
-						if (tokenErrorCount >= 3) {
-							setError(true);
-							console.error('invalid token error occured more than 3 times.');
-						} else {
-							tokenErrorCount === 0
-								? refreshTokens(getHongsamList)
-								: setTimeout(() => refreshTokens(getHongsamList), 1000);
-						}
-
-						return tokenErrorCount++;
-					}
-
-					setError(true);
-				});
-		};
-
-		getHongsamList();
+		getHongsamList(1);
 	}, []);
+
+	const handleClickChangePage = (num: number) => {
+		setPage(num);
+		getHongsamList(num);
+		window.scrollTo(0, 0);
+	};
 
 	return (
 		<div css={productPageWrapCss}>
@@ -100,6 +107,9 @@ export default function RedGinsengPage() {
 				{newData.map(data => {
 					return <ProductCardHorizontal key={data.productVersionGroupSeq} productData={data} />;
 				})}
+			</div>
+			<div>
+				<Pagination page={page} onClick={handleClickChangePage} totalPage={5} />
 			</div>
 		</div>
 	);
@@ -137,7 +147,7 @@ const ProductCardWrapCss = css`
 `;
 
 const loadingCss = css`
-	position: absolute;
+	position: fixed;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
