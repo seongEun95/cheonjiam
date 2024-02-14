@@ -13,18 +13,20 @@ export default function Header() {
 
 	return (
 		<div>
-			<div></div>
 			<ul css={userMenuWrapCss}>
 				{isLoggedIn && <li>{`안녕하세요 ${userInfo.email.split('@')[0]}님`}</li>}
-				{userMenuData.map((icon, index) => (
-					<li key={index} css={iconListCss}>
-						{icon.to === '/cart' && <span css={cartItemsLengthCss}>{cartItems.length}</span>}
-						{isLoggedIn && index === 0 && (icon.to = '/profile')}
-						<Link to={icon.to}>
-							<img src={icon.imgSrc} alt={icon.alt} />
-						</Link>
-					</li>
-				))}
+				{userMenuData.map((icon, index) => {
+					const newUrl = isLoggedIn && index === 0 ? '/profile' : icon.to;
+
+					return (
+						<li key={index} css={iconListCss}>
+							{icon.to === '/cart' && <span css={cartItemsLengthCss}>{cartItems.length}</span>}
+							<Link to={newUrl}>
+								<img src={icon.imgSrc} alt={icon.alt} />
+							</Link>
+						</li>
+					);
+				})}
 			</ul>
 		</div>
 	);
