@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { jsx, css } from '@emotion/react';
 import ProductCardVertical from '../components/ProductCardVertical';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CarouselSlide from '../components/Carousel';
 import { IoIosArrowBack } from 'react-icons/io';
@@ -14,17 +14,19 @@ export default function MainPage() {
 	const [newData, setNewData] = useState<ProductHorizontalList>([]);
 	const slideData = newData.filter((_, index) => index < 10);
 
-	const at = localStorage.getItem('at');
-	axios
-		.get(`http://localhost:8000/hongsam?min=1000&max=280000`, {
-			headers: { Authorization: `Bearer ${at}` },
-		})
-		.then(res => {
-			setNewData(res.data);
-		})
-		.catch(err => {
-			console.error(err);
-		});
+	useEffect(() => {
+		const at = localStorage.getItem('at');
+		axios
+			.get(`http://localhost:8000/hongsam`, {
+				headers: { Authorization: `Bearer ${at}` },
+			})
+			.then(res => {
+				setNewData(res.data);
+			})
+			.catch(err => {
+				console.error(err);
+			});
+	}, []);
 
 	const navigate = useNavigate();
 	const [slideNum, setSlideNum] = useState<number>(0);

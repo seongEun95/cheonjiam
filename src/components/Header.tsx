@@ -8,18 +8,27 @@ import { RootState } from '../redux/store';
 
 export default function Header() {
 	const cartItems = useSelector((state: RootState) => state.cart.items);
+	const userInfo = useSelector((state: RootState) => state.user.user);
+	const isLoggedIn = userInfo.id !== 0;
 
 	return (
-		<ul css={userMenuWrapCss}>
-			{userMenuData.map((icon, index) => (
-				<li key={index} css={iconListCss}>
-					{icon.to === '/cart' && <span css={cartItemsLengthCss}>{cartItems.length}</span>}
-					<Link to={icon.to}>
-						<img src={icon.imgSrc} alt={icon.alt} />
-					</Link>
-				</li>
-			))}
-		</ul>
+		<div>
+			<ul css={userMenuWrapCss}>
+				{isLoggedIn && <li>{`안녕하세요 ${userInfo.email.split('@')[0]}님`}</li>}
+				{userMenuData.map((icon, index) => {
+					const newUrl = isLoggedIn && index === 0 ? '/profile' : icon.to;
+
+					return (
+						<li key={index} css={iconListCss}>
+							{icon.to === '/cart' && <span css={cartItemsLengthCss}>{cartItems.length}</span>}
+							<Link to={newUrl}>
+								<img src={icon.imgSrc} alt={icon.alt} />
+							</Link>
+						</li>
+					);
+				})}
+			</ul>
+		</div>
 	);
 }
 
